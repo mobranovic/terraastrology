@@ -19,7 +19,7 @@ const { title, description = SITE.description, image, type = 'website', noindex 
 const ld = [jsonLd].flat().filter(Boolean).map((o) => ({ '@context': 'https://schema.org', ...(o as object) }));
 const fullTitle = title ? `${title} · ${SITE.title}` : `${SITE.title} — ${SITE.tagline}`;
 const canonical = new URL(Astro.url.pathname, Astro.site);
-const ogImage = image ? new URL(image, Astro.site).href : undefined;
+const ogImage = new URL(image ?? '/og.png', Astro.site).href;
 ---
 <!doctype html>
 <html lang="en">
@@ -31,6 +31,7 @@ const ogImage = image ? new URL(image, Astro.site).href : undefined;
     <link rel="canonical" href={canonical} />
     {noindex && <meta name="robots" content="noindex" />}
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <link rel="alternate" type="application/rss+xml" title={SITE.title} href="/rss.xml" />
     <link rel="sitemap" href="/sitemap-index.xml" />
     <meta property="og:site_name" content={SITE.title} />
@@ -38,8 +39,8 @@ const ogImage = image ? new URL(image, Astro.site).href : undefined;
     <meta property="og:title" content={title ?? SITE.title} />
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonical} />
-    {ogImage && <meta property="og:image" content={ogImage} />}
-    <meta name="twitter:card" content={ogImage ? 'summary_large_image' : 'summary'} />
+    <meta property="og:image" content={ogImage} />
+    <meta name="twitter:card" content="summary_large_image" />
     <meta name="theme-color" content="#f6f8f3" media="(prefers-color-scheme: light)" />
     <meta name="theme-color" content="#0d1512" media="(prefers-color-scheme: dark)" />
     <script is:inline>

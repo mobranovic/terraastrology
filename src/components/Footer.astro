@@ -2,13 +2,14 @@
 import { SITE } from '../lib/site';
 import { SIGNS, glyph } from '../lib/zodiac';
 import Starfield from './Starfield.astro';
+import Logo from './Logo.astro';
 const year = new Date().getFullYear();
 ---
 <footer class="site-footer deep">
   <Starfield count={60} seed={3} />
   <div class="wrap inner">
     <div class="about">
-      <p class="name">Terra <em>Astrology</em></p>
+      <p class="name"><Logo size={56} id="logo-footer" /><span>Terra <em>Astrology</em></span></p>
       <p>{SITE.tagline}. Essays and consultations by {SITE.author}.</p>
       <a class="btn btn-light" href="/book/">Book a reading</a>
     </div>
@@ -65,10 +66,14 @@ const year = new Date().getFullYear();
     gap: 40px;
   }
   .name {
+    display: flex;
+    align-items: center;
+    gap: 14px;
     font: 500 1.6rem/1 var(--font-display);
     color: var(--band-ink);
   }
   .name em { color: var(--band-accent); }
+  .name :global(svg) { border-radius: 50%; box-shadow: 0 0 0 1px rgb(127 220 174 / 0.35); }
   .about p:not(.name) { max-width: 42ch; }
   h2 {
     font: 600 0.75rem/1 var(--font-ui);

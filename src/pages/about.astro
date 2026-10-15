@@ -2,7 +2,7 @@
 import { getEntry } from 'astro:content';
 import Page from '../layouts/Page.astro';
 import Testimonials from '../components/Testimonials.astro';
-import { thumbUrl } from '../lib/media.mjs';
+import Logo from '../components/Logo.astro';
 import { ABOUT } from '../data/about';
 import { getPosts } from '../lib/posts';
 import { person } from '../lib/schema';
@@ -14,11 +14,14 @@ const essays = (await getPosts()).length;
   eyebrow="Marko Obranović"
   lede="Why astrology? Because I don't feel any borders in astrology."
   description="Marko Obranović – astrologer and author of Terra Astrology: astrology from a different perspective."
-  image={page.data.image}
   jsonLd={person()}
 >
   <section class="wrap section about">
-    {page.data.image && <img class="portrait" src={thumbUrl(page.data.image, 640)} alt="" decoding="async" />}
+    {ABOUT.photo ? (
+      <img class="portrait" src={ABOUT.photo} alt="Marko Obranović" decoding="async" />
+    ) : (
+      <div class="emblem"><Logo size={300} id="logo-about" title="Terra Astrology emblem: the Hermit lighting the way" /></div>
+    )}
     <div>
       <div class="prose">
         <p class="big">
@@ -64,6 +67,8 @@ const essays = (await getPosts()).length;
 <style>
   .about { display: grid; grid-template-columns: 340px minmax(0, 1fr); gap: clamp(32px, 6vw, 72px); align-items: start; }
   .portrait { width: 100%; aspect-ratio: 4 / 5; object-fit: cover; border-radius: var(--radius); box-shadow: var(--shadow); position: sticky; top: 100px; }
+  .emblem { position: sticky; top: 100px; }
+  .emblem :global(svg) { width: 100%; height: auto; border-radius: 50%; box-shadow: var(--shadow); }
   .big { font-size: 1.2em; color: var(--ink); }
   .facts { list-style: none; padding: 0; margin: 32px 0; display: flex; flex-wrap: wrap; gap: 10px; }
   .facts li { padding: 10px 16px; border-radius: 999px; background: var(--accent-soft); color: var(--accent); font-weight: 600; font-size: 0.9rem; }
@@ -72,5 +77,5 @@ const essays = (await getPosts()).length;
   .actions { display: flex; gap: 12px; flex-wrap: wrap; }
   .btn-ghost { color: var(--accent); }
   .section:has(> :empty) { display: none; }
-  @media (max-width: 820px) { .about { grid-template-columns: 1fr; } .portrait { position: static; max-width: 320px; } }
+  @media (max-width: 820px) { .about { grid-template-columns: 1fr; } .portrait, .emblem { position: static; max-width: 300px; } }
 </style>

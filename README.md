@@ -43,7 +43,7 @@ npm run build      # gotova stranica u mapi dist/
 Sve se upisuje na jedno mjesto; odjeljci se na stranici pojavljuju sami čim podaci postoje:
 
 - [ ] **Iskustva klijenata** (3–5, uz dozvolu) → `src/data/testimonials.ts`
-- [ ] **Fotografija** → zamijeniti `image` u `src/content/pages/about-me.md`
+- [ ] **Fotografija** → staviti u `public/images/` i upisati putanju u `src/data/about.ts` (`photo`); do tada se prikazuje amblem
 - [ ] **Biografija i činjenice** (godine prakse, obrazovanje) → `src/data/about.ts`
 - [ ] **Kalendar** (npr. Cal.com) → `BOOKING.calUrl`
 - [ ] **Plaćanje unaprijed** (Stripe/PayPal linkovi) → `BOOKING.paymentLinks`

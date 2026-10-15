@@ -1,6 +1,7 @@
 ---
-// Decorative zodiac wheel; each glyph links to its sign essay.
+// Zodiac wheel with the Terra Astrology emblem at its centre; each glyph links to its sign essay.
 import { SIGNS, glyph } from '../lib/zodiac';
+import Logo from './Logo.astro';
 interface Props { size?: number; links?: boolean }
 const { links = true } = Astro.props;
 const R = 150;
@@ -20,19 +21,13 @@ const ticks = Array.from({ length: 72 }, (_, i) => {
     <circle cx="200" cy="200" r="186" stroke-width="1" />
     <circle cx="200" cy="200" r="172" stroke-width="0.6" opacity="0.6" />
     <circle cx="200" cy="200" r="122" stroke-width="0.6" opacity="0.6" />
-    <circle cx="200" cy="200" r="54" stroke-width="0.6" opacity="0.4" />
     {ticks.map((t) => <line {...t} stroke-width="0.6" opacity="0.7" />)}
     {SIGNS.map((_, i) => {
       const a = ((180 - i * 30) * Math.PI) / 180;
       return <line x1={200 + Math.cos(a) * 122} y1={200 + Math.sin(a) * 122} x2={200 + Math.cos(a) * 172} y2={200 + Math.sin(a) * 172} stroke-width="0.6" opacity="0.6" />;
     })}
   </g>
-  <g class="spin">
-    {/* a grand trine and a square – the classic aspect figures */}
-    <polygon points="78,200 261,94 261,306" fill="none" stroke="currentColor" stroke-width="0.5" opacity="0.35" />
-    <polygon points="114,114 286,114 286,286 114,286" fill="none" stroke="currentColor" stroke-width="0.5" opacity="0.25" />
-  </g>
-  <circle cx="200" cy="200" r="5" class="sun" />
+  <g transform="translate(88 88)" class="emblem"><Logo size={224} id="logo-wheel" title="The Hermit lighting the way" /></g>
   {pos.map((s) =>
     links ? (
       <a href={`/${s.post}/`} class="sign">
@@ -47,9 +42,7 @@ const ticks = Array.from({ length: 72 }, (_, i) => {
 </svg>
 <style>
   .wheel { width: 100%; height: auto; color: var(--band-accent); overflow: visible; }
-  .spin { transform-origin: 200px 200px; animation: spin 240s linear infinite; }
-  @keyframes spin { to { transform: rotate(360deg); } }
-  .sun { fill: var(--band-accent); }
+  .emblem { filter: drop-shadow(0 6px 18px rgb(15 34 25 / 0.25)); }
   text {
     font-size: 22px;
     fill: var(--band-ink);

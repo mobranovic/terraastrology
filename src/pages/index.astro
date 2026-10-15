@@ -1,5 +1,4 @@
 ---
-import { getEntry } from 'astro:content';
 import Base from '../layouts/Base.astro';
 import Starfield from '../components/Starfield.astro';
 import ZodiacWheel from '../components/ZodiacWheel.astro';
@@ -9,7 +8,8 @@ import Testimonials from '../components/Testimonials.astro';
 import FaqList from '../components/FaqList.astro';
 import ForecastTeaser from '../components/natal-atlas/ForecastTeaser.astro';
 import { getPosts } from '../lib/posts';
-import { thumbUrl } from '../lib/media.mjs';
+import Logo from '../components/Logo.astro';
+import { ABOUT } from '../data/about';
 import { SIGNS, glyph } from '../lib/zodiac';
 import { SERVICES, PAYMENT } from '../lib/services';
 import { faqByIds } from '../data/faq';
@@ -17,7 +17,6 @@ import { faqPage, person, website } from '../lib/schema';
 
 const posts = await getPosts();
 const featured = posts.filter((p) => p.data.featured).slice(0, 3);
-const about = (await getEntry('pages', 'about-me'))!;
 const faq = faqByIds(['how-session', 'which', 'birth-time', 'predict']);
 const minPrice = Math.min(...SERVICES.map((s) => s.price));
 
@@ -107,7 +106,11 @@ const questions = [
 
   <section class="section band">
     <div class="wrap about">
-      {about.data.image && <img src={thumbUrl(about.data.image, 640)} alt="" loading="lazy" decoding="async" />}
+      {ABOUT.photo ? (
+        <img src={ABOUT.photo} alt="Marko Obranović" loading="lazy" decoding="async" />
+      ) : (
+        <Logo size={300} id="logo-home-about" />
+      )}
       <div>
         <p class="eyebrow">About</p>
         <h2>Astrology from a different perspective</h2>
@@ -201,6 +204,7 @@ const questions = [
 
   .about { display: grid; grid-template-columns: 300px 1fr; gap: clamp(32px, 6vw, 72px); align-items: center; }
   .about img { width: 100%; aspect-ratio: 4 / 5; object-fit: cover; border-radius: var(--radius); box-shadow: var(--shadow); }
+  .about :global(svg) { width: 100%; height: auto; border-radius: 50%; box-shadow: var(--shadow); }
   .about h2 { font-size: clamp(1.8rem, 3.4vw, 2.6rem); }
   .about p:not(.eyebrow) { font-family: var(--font-text); color: var(--ink-soft); font-size: 1.08rem; max-width: 60ch; }
   .about .quote { font-style: italic; font-size: 1.25rem; color: var(--ink); }
@@ -228,7 +232,7 @@ const questions = [
     .wheel-wrap { max-width: 340px; }
     .steps { grid-template-columns: 1fr; }
     .about { grid-template-columns: 1fr; }
-    .about img { max-width: 280px; }
+    .about img, .about :global(svg) { max-width: 280px; }
   }
   @media (max-width: 640px) {
     .questions { grid-template-columns: 1fr; }
