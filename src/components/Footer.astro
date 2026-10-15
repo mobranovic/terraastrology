@@ -9,7 +9,7 @@ const year = new Date().getFullYear();
   <Starfield count={60} seed={3} />
   <div class="wrap inner">
     <div class="about">
-      <p class="name"><Logo size={56} id="logo-footer" /><span>Terra <em>Astrology</em></span></p>
+      <p class="name"><Logo size={52} /><span>Terra <em>Astrology</em></span></p>
       <p>{SITE.tagline}. Essays and consultations by {SITE.author}.</p>
       <a class="btn btn-light" href="/book/">Book a reading</a>
     </div>
@@ -73,7 +73,7 @@ const year = new Date().getFullYear();
     color: var(--band-ink);
   }
   .name em { color: var(--band-accent); }
-  .name :global(svg) { border-radius: 50%; box-shadow: 0 0 0 1px rgb(127 220 174 / 0.35); }
+  .name :global(svg) { color: var(--band-ink); --logo-accent: var(--band-accent); }
   .about p:not(.name) { max-width: 42ch; }
   h2 {
     font: 600 0.75rem/1 var(--font-ui);
