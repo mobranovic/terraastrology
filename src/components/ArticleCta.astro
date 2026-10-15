@@ -1,0 +1,34 @@
+---
+// Contextual call to action at the end of an essay, chosen by its topic.
+interface Props { categories: string[]; slug: string }
+const { categories } = Astro.props;
+const has = (...c: string[]) => c.some((x) => categories.includes(x));
+const cta = has('love-astrology')
+  ? { eyebrow: 'Relationships', title: 'Two charts tell more than two signs', text: 'A synastry reading compares both birth charts — attraction, friction and what the relationship asks of each of you.', href: '/consultations/synastry/', button: 'See the relationship reading' }
+  : has('12-signs-of-the-zodiac', '12-myths-of-the-zodiac')
+    ? { eyebrow: 'Beyond the Sun sign', title: 'Your Sun sign is one twelfth of the story', text: 'Your Moon, Ascendant and the planets in their houses complete the picture. Let us read the whole chart together.', href: '/consultations/natal-chart/', button: 'See the natal chart reading' }
+    : has('mundane-astrology', 'eclipse')
+      ? { eyebrow: 'Free forecast', title: 'How do these cycles touch your own chart?', text: 'Enter your birth data and get a short summary of the transits and progressions shaping your coming year — free, in your browser.', href: '/free-forecast/', button: 'Get your free forecast' }
+      : { eyebrow: 'Your year ahead', title: 'What are the planets doing in your chart?', text: 'A free summary of your strongest transits and progressions for the next twelve months — calculated from your birth data in seconds.', href: '/free-forecast/', button: 'Get your free forecast' };
+---
+<aside class="article-cta">
+  <p class="eyebrow">{cta.eyebrow}</p>
+  <h2>{cta.title}</h2>
+  <p class="text">{cta.text}</p>
+  <div class="actions">
+    <a class="btn btn-primary" href={cta.href}>{cta.button}</a>
+    <a class="btn btn-ghost" href="/book/">Book a reading</a>
+  </div>
+</aside>
+<style>
+  .article-cta {
+    margin-top: 56px; padding: clamp(24px, 4vw, 40px);
+    border-radius: calc(var(--radius) + 4px);
+    background: radial-gradient(120% 140% at 100% 0%, var(--accent-soft), var(--surface) 70%);
+    border: 1px solid var(--line);
+  }
+  h2 { font-size: clamp(1.5rem, 2.6vw, 2rem); }
+  .text { color: var(--ink-soft); font-family: var(--font-text); font-size: 1.08rem; max-width: 56ch; }
+  .actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 8px; }
+  .btn-ghost { color: var(--accent); border-color: var(--line); }
+</style>

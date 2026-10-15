@@ -1,0 +1,49 @@
+---
+import Page from '../layouts/Page.astro';
+import ForecastTool from '../components/natal-atlas/ForecastTool.astro';
+import FaqList from '../components/FaqList.astro';
+import { faqPage } from '../lib/schema';
+
+const faq = [
+  {
+    id: 'what',
+    q: 'What does the forecast look at?',
+    a: 'The three strongest transits of Jupiter, Saturn, Uranus, Neptune and Pluto to your Sun, Moon, Ascendant, Midheaven and personal planets over the next twelve months; Jupiter and Saturn moving through your houses; your progressed Moon; the phase of your progressed lunation cycle; and your progressed Sun.',
+  },
+  {
+    id: 'time',
+    q: 'Why does the birth time matter?',
+    a: 'The time of birth sets your Ascendant, Midheaven and houses. Without it the forecast still works, but leaves out the angles and houses, and the progressed Moon is approximate.',
+  },
+  {
+    id: 'privacy-tool',
+    q: 'Is my data stored?',
+    a: 'No. The whole calculation runs in your own browser. Nothing you enter is sent to a server or saved.',
+  },
+  {
+    id: 'reading',
+    q: 'How is this different from a consultation?',
+    a: 'The forecast picks a handful of the strongest movements and describes them in general terms. In a consultation we read them together with your whole natal chart and your life — what they mean for you, and how to work with them.',
+  },
+];
+---
+<Page
+  title="Your year ahead"
+  eyebrow="Free forecast · Natal Atlas"
+  lede="A short reading of the transits and progressions shaping your next twelve months — from your date, time and place of birth."
+  description="Free astrological forecast for the next 12 months: transits, progressions and your progressed lunation phase, calculated from your birth data."
+  jsonLd={faqPage(faq)}
+>
+  <div class="wrap section narrow">
+    <ForecastTool />
+  </div>
+  <section class="wrap section narrow how">
+    <h2>About this forecast</h2>
+    <FaqList items={faq} />
+  </section>
+</Page>
+<style>
+  .narrow { max-width: 980px; }
+  .how { padding-top: 0; }
+  .how h2 { font-size: clamp(1.6rem, 3vw, 2.2rem); }
+</style>

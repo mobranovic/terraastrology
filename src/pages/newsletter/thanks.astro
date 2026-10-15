@@ -1,0 +1,10 @@
+---
+import Page from '../../layouts/Page.astro';
+---
+<Page title="You're subscribed" eyebrow="Newsletter" lede="Thank you — the next monthly sky notes will arrive in your inbox." noindex>
+  <div class="wrap section actions">
+    <a class="btn btn-primary" href="/free-forecast/">Try the free forecast</a>
+    <a class="btn btn-ghost" href="/journal/">Read the journal</a>
+  </div>
+</Page>
+<style>.actions { display: flex; gap: 12px; flex-wrap: wrap; } .btn-ghost { color: var(--accent); }</style>

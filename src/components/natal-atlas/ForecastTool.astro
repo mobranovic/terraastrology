@@ -1,0 +1,258 @@
+---
+// Free "year ahead" forecast – the prognostic part of Natalni Atlas.
+// Everything is calculated in the visitor's browser (src/lib/forecast/);
+// the place list is public/data/cities.json (npm run build:cities).
+---
+<div class="tool">
+  <form class="birth" id="forecast-form" novalidate>
+    <div class="fields">
+      <label>Date of birth
+        <input type="date" name="date" required min="1900-01-01" max="2030-12-31" />
+      </label>
+      <label>Time of birth
+        <input type="time" name="time" />
+      </label>
+      <label class="place">Place of birth
+        <input
+          name="place" id="place" autocomplete="off" required placeholder="Start typing a city…"
+          role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="place-list"
+        />
+        <ul id="place-list" role="listbox" hidden></ul>
+      </label>
+    </div>
+    <label class="check"><input type="checkbox" name="noTime" /> I don't know my birth time</label>
+    <p class="error" id="forecast-error" role="alert" hidden></p>
+    <button class="btn btn-primary" type="submit">Show my year ahead</button>
+    <p class="privacy">
+      <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path d="M12 3l7 3v5c0 4.5-3 8.3-7 10-4-1.7-7-5.5-7-10V6l7-3z" fill="none" stroke="currentColor" stroke-width="1.6"/></svg>
+      Calculated in your browser — your birth data is not sent or stored anywhere.
+    </p>
+  </form>
+
+  <div class="result" id="forecast-result" hidden aria-live="polite">
+    <ul class="big3" id="big3"></ul>
+    <div class="summary" id="summary"></div>
+    <div class="dates" id="dates-wrap" hidden>
+      <h3>Key dates</h3>
+      <ul id="dates"></ul>
+    </div>
+    <div class="next">
+      <div>
+        <h3>Go deeper</h3>
+        <p>In a personal consultation we read these movements together with your whole chart — and what to do with them.</p>
+        <a class="btn btn-primary" href="/book/?from=forecast">Book a reading</a>
+      </div>
+      <form name="newsletter" method="POST" action="/newsletter/thanks/" data-netlify="true" netlify-honeypot="company" class="mini-news">
+        <input type="hidden" name="form-name" value="newsletter" />
+        <input type="hidden" name="source" value="free-forecast" />
+        <p class="visually-hidden"><label>Leave empty <input name="company" tabindex="-1" autocomplete="off" /></label></p>
+        <h3>Monthly sky notes</h3>
+        <p>Eclipses, retrogrades and the big cycles — a short letter once a month.</p>
+        <div class="row">
+          <label class="visually-hidden" for="news-email">E-mail</label>
+          <input id="news-email" type="email" name="email" placeholder="your@email.com" required autocomplete="email" />
+          <button class="btn btn-ghost" type="submit">Subscribe</button>
+        </div>
+        <label class="check small"><input type="checkbox" name="consent" value="yes" required /> I agree to receive the newsletter and can unsubscribe at any time.</label>
+      </form>
+    </div>
+  </div>
+</div>
+
+<script>
+  type City = [string, string, number, number, number];
+  const form = document.getElementById('forecast-form') as HTMLFormElement;
+  const input = document.getElementById('place') as HTMLInputElement;
+  const list = document.getElementById('place-list') as HTMLUListElement;
+  const err = document.getElementById('forecast-error')!;
+  const regions = new Intl.DisplayNames(['en'], { type: 'region' });
+  const fold = (s: string) => s.normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/đ/g, 'd').replace(/Đ/g, 'D').toLowerCase().trim();
+
+  let db: { tz: string[]; c: City[]; folded: string[] } | null = null;
+  let loading: Promise<void> | null = null;
+  let chosen: { name: string; lat: number; lon: number; tz: string } | null = null;
+  let options: City[] = [];
+  let active = -1;
+
+  const label = (c: City) => `${c[0]}, ${regions.of(c[1]) ?? c[1]}`;
+  function loadCities() {
+    loading ??= fetch('/data/cities.json')
+      .then((r) => r.json())
+      .then((d) => { db = { ...d, folded: d.c.map((c: City) => fold(c[0])) }; });
+    return loading;
+  }
+
+  function show() {
+    list.innerHTML = '';
+    options.forEach((c, i) => {
+      const li = document.createElement('li');
+      li.role = 'option';
+      li.id = `place-opt-${i}`;
+      li.textContent = label(c);
+      li.setAttribute('aria-selected', String(i === active));
+      li.addEventListener('mousedown', (e) => { e.preventDefault(); pick(i); });
+      list.append(li);
+    });
+    list.hidden = options.length === 0;
+    input.setAttribute('aria-expanded', String(!list.hidden));
+    input.setAttribute('aria-activedescendant', active >= 0 ? `place-opt-${active}` : '');
+  }
+
+  function pick(i: number) {
+    const c = options[i];
+    if (!c || !db) return;
+    chosen = { name: label(c), lat: c[2], lon: c[3], tz: db.tz[c[4]] };
+    input.value = chosen.name;
+    options = [];
+    active = -1;
+    show();
+  }
+
+  async function search() {
+    chosen = null;
+    await loadCities();
+    const [namePart, countryPart] = input.value.split(',').map(fold);
+    if (!db || namePart.length < 2) { options = []; show(); return; }
+    const out: City[] = [];
+    for (let i = 0; i < db.c.length && out.length < 8; i++) {
+      if (!db.folded[i].startsWith(namePart)) continue;
+      if (countryPart && !fold(regions.of(db.c[i][1]) ?? '').startsWith(countryPart)) continue;
+      out.push(db.c[i]);
+    }
+    options = out;
+    active = out.length ? 0 : -1;
+    show();
+  }
+
+  input.addEventListener('focus', loadCities, { once: true });
+  input.addEventListener('input', search);
+  input.addEventListener('keydown', (e) => {
+    if (list.hidden) return;
+    if (e.key === 'ArrowDown') { active = Math.min(options.length - 1, active + 1); show(); e.preventDefault(); }
+    if (e.key === 'ArrowUp') { active = Math.max(0, active - 1); show(); e.preventDefault(); }
+    if (e.key === 'Enter' && active >= 0) { pick(active); e.preventDefault(); }
+    if (e.key === 'Escape') { options = []; show(); }
+  });
+  input.addEventListener('blur', () => setTimeout(() => { if (!chosen && options.length) pick(0); options = []; show(); }, 120));
+
+  const noTime = form.elements.namedItem('noTime') as HTMLInputElement;
+  const timeInput = form.elements.namedItem('time') as HTMLInputElement;
+  noTime.addEventListener('change', () => { timeInput.disabled = noTime.checked; });
+
+  const GLYPH: Record<string, string> = {
+    Aries: '♈', Taurus: '♉', Gemini: '♊', Cancer: '♋', Leo: '♌', Virgo: '♍',
+    Libra: '♎', Scorpio: '♏', Sagittarius: '♐', Capricorn: '♑', Aquarius: '♒', Pisces: '♓',
+  };
+  const el = (tag: string, cls: string, text: string) => { const n = document.createElement(tag); n.className = cls; n.textContent = text; return n; };
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const date = (form.elements.namedItem('date') as HTMLInputElement).value;
+    const time = noTime.checked ? null : timeInput.value || null;
+    const fail = (msg: string) => { err.textContent = msg; err.hidden = false; };
+    err.hidden = true;
+    if (!date) return fail('Please enter your date of birth.');
+    if (!noTime.checked && !time) return fail('Please enter your time of birth, or tick “I don’t know my birth time”.');
+    if (!chosen) return fail('Please choose your place of birth from the list.');
+
+    const btn = form.querySelector('button[type="submit"]') as HTMLButtonElement;
+    btn.disabled = true;
+    btn.textContent = 'Calculating…';
+    try {
+      const { computeForecast } = await import('../../lib/forecast/forecast');
+      const f = computeForecast({ date, time, lat: chosen.lat, lon: chosen.lon, tz: chosen.tz });
+
+      const big3 = document.getElementById('big3')!;
+      big3.replaceChildren();
+      const sign = (s: string) => GLYPH[s.split(' ')[0]] ?? '';
+      for (const [k, v] of [['Sun', f.sun], ['Moon', f.moon], ['Ascendant', f.asc]] as const) {
+        if (!v) continue;
+        const li = document.createElement('li');
+        li.append(el('span', 'glyph', `${sign(v)}︎`), el('small', '', k), el('strong', '', v));
+        big3.append(li);
+      }
+
+      const summary = document.getElementById('summary')!;
+      const last = f.paragraphs.length - 1;
+      summary.replaceChildren(
+        ...f.paragraphs.map((p, i) => el('p', i === 0 ? 'lead' : i === last ? 'closing' : '', p.join(' '))),
+      );
+
+      const dates = document.getElementById('dates')!;
+      dates.replaceChildren(...f.keyDates.map((d) => {
+        const li = document.createElement('li');
+        li.append(el('time', '', d.when), el('span', '', d.label));
+        return li;
+      }));
+      document.getElementById('dates-wrap')!.hidden = f.keyDates.length === 0;
+
+      try {
+        sessionStorage.setItem('ta-birth', JSON.stringify({ date, time, place: chosen.name }));
+      } catch {}
+      if (window.plausible) window.plausible('Forecast');
+
+      const result = document.getElementById('forecast-result')!;
+      result.hidden = false;
+      result.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    } catch (x) {
+      console.error(x);
+      fail('Sorry, something went wrong with the calculation. Please check the data and try again.');
+    } finally {
+      btn.disabled = false;
+      btn.textContent = 'Show my year ahead';
+    }
+  });
+
+  declare global { interface Window { plausible?: (e: string) => void } }
+</script>
+
+<style>
+  .tool { display: grid; gap: 40px; }
+  .birth { display: grid; gap: 18px; padding: clamp(22px, 4vw, 36px); border-radius: calc(var(--radius) + 4px); background: var(--surface); border: 1px solid var(--line); box-shadow: var(--shadow); }
+  .fields { display: grid; gap: 16px; grid-template-columns: 1fr 0.8fr 1.6fr; }
+  label { display: grid; gap: 6px; font-size: 0.88rem; font-weight: 500; color: var(--ink-soft); position: relative; }
+  input:not([type='checkbox']) {
+    font: 400 1rem var(--font-ui); color: var(--ink); background: var(--bg);
+    border: 1px solid var(--line); border-radius: 10px; padding: 0.8em 0.9em; width: 100%;
+  }
+  input:disabled { opacity: 0.45; }
+  input:focus { outline: 2px solid var(--focus); outline-offset: 1px; border-color: transparent; }
+  [role='listbox'] {
+    position: absolute; top: 100%; left: 0; right: 0; z-index: 10; margin: 4px 0 0; padding: 6px; list-style: none;
+    background: var(--surface); border: 1px solid var(--line); border-radius: 12px; box-shadow: var(--shadow);
+    max-height: 300px; overflow: auto;
+  }
+  [role='listbox'] :global(li) { padding: 10px 12px; border-radius: 8px; cursor: pointer; font-weight: 400; color: var(--ink); }
+  [role='listbox'] :global(li[aria-selected='true']), [role='listbox'] :global(li:hover) { background: var(--accent-soft); }
+  .check { display: flex; gap: 10px; align-items: center; font-weight: 400; }
+  .check input { accent-color: var(--accent); width: 18px; height: 18px; }
+  .birth > .btn { justify-self: start; }
+  .error { margin: 0; color: #b42318; font-weight: 500; }
+  .privacy { display: flex; gap: 8px; align-items: center; margin: 0; color: var(--muted); font-size: 0.85rem; }
+  .privacy svg { color: var(--accent); flex: none; }
+
+  .result { scroll-margin-top: 90px; display: grid; gap: 32px; }
+  .big3 { list-style: none; margin: 0; padding: 0; display: grid; gap: 12px; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); }
+  .big3 :global(li) { display: grid; grid-template-columns: auto 1fr; column-gap: 14px; align-items: center; padding: 18px 20px; border-radius: var(--radius); background: var(--accent-soft); }
+  .big3 :global(.glyph) { grid-row: span 2; font-size: 2.2rem; color: var(--accent); line-height: 1; }
+  .big3 :global(small) { color: var(--muted); font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.1em; font-weight: 600; }
+  .big3 :global(strong) { font: 500 1.35rem/1.2 var(--font-display); }
+  .summary { font-family: var(--font-text); font-size: clamp(1.08rem, 0.4vw + 1rem, 1.22rem); line-height: 1.75; color: var(--ink-soft); max-width: 70ch; }
+  .summary :global(.lead) { font-size: 1.1em; color: var(--ink); }
+  .summary :global(.closing) { padding-left: 1em; border-left: 3px solid var(--accent); font-style: italic; }
+  .dates h3, .next h3 { font-size: 1.3rem; }
+  .dates ul { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--line); }
+  .dates :global(li) { display: grid; grid-template-columns: 220px 1fr; gap: 16px; padding: 12px 0; border-bottom: 1px solid var(--line); }
+  .dates :global(time) { font-weight: 600; color: var(--accent); }
+  .next { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+  .next > * { padding: 28px; border-radius: var(--radius); border: 1px solid var(--line); background: var(--surface); }
+  .next p { color: var(--muted); }
+  .mini-news .row { display: flex; gap: 8px; margin-bottom: 10px; }
+  .mini-news .btn-ghost { color: var(--accent); border-color: var(--line); }
+  .small { font-size: 0.8rem; color: var(--muted); }
+  @media (max-width: 760px) {
+    .fields, .next { grid-template-columns: 1fr; }
+    .dates :global(li) { grid-template-columns: 1fr; gap: 2px; }
+    .mini-news .row { flex-direction: column; }
+  }
+</style>

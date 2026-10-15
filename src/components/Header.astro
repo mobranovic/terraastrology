@@ -23,7 +23,7 @@ const isCurrent = (href: string) => path === href || (href !== '/' && path.start
         {NAV.map((n) => (
           <li><a href={n.href} aria-current={isCurrent(n.href) ? 'page' : undefined}>{n.label}</a></li>
         ))}
-        <li class="cta"><a class="btn btn-primary" href="/astrological-consultation/">Book a reading</a></li>
+        <li class="cta"><a class="btn btn-primary" href="/book/">Book a reading</a></li>
       </ul>
     </nav>
 

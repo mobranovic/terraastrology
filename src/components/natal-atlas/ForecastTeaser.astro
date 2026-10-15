@@ -1,0 +1,38 @@
+---
+// Invitation to the free forecast (/free-forecast/), used across the site.
+import Starfield from '../Starfield.astro';
+interface Props { compact?: boolean; heading?: string }
+const { compact = false, heading = 'What does your coming year hold?' } = Astro.props;
+---
+<section class:list={['teaser', 'deep', { compact }]}>
+  <Starfield count={compact ? 30 : 70} seed={11} />
+  <div class="inner">
+    <div>
+      <p class="eyebrow">Free forecast · Natal Atlas</p>
+      <h2>{heading}</h2>
+      <p>
+        Enter your date, time and place of birth and get a short reading of the transits and progressions
+        shaping your next twelve months — free, and calculated privately in your browser.
+      </p>
+    </div>
+    <a class="btn btn-light" href="/free-forecast/">Get my free forecast</a>
+  </div>
+</section>
+<style>
+  .teaser {
+    position: relative; overflow: hidden;
+    border-radius: calc(var(--radius) + 6px);
+    background:
+      radial-gradient(80% 120% at 100% 0%, var(--glow), transparent 60%),
+      radial-gradient(120% 140% at 0% 100%, var(--band-2), var(--band));
+    color: var(--band-ink);
+    padding: clamp(32px, 5vw, 64px);
+  }
+  .inner { position: relative; display: flex; gap: 32px; align-items: end; justify-content: space-between; flex-wrap: wrap; }
+  .inner > div { max-width: 60ch; }
+  .eyebrow { color: var(--band-accent); }
+  h2 { font-size: clamp(1.7rem, 3.2vw, 2.5rem); }
+  p { color: var(--band-muted); margin-bottom: 0; }
+  .compact { padding: 28px; }
+  .compact h2 { font-size: 1.45rem; }
+</style>

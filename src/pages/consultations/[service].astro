@@ -1,0 +1,118 @@
+---
+import Page from '../../layouts/Page.astro';
+import PackageCard from '../../components/PackageCard.astro';
+import PostCard from '../../components/PostCard.astro';
+import FaqList from '../../components/FaqList.astro';
+import Testimonials from '../../components/Testimonials.astro';
+import ForecastTeaser from '../../components/natal-atlas/ForecastTeaser.astro';
+import { OFFERINGS, type Offering } from '../../data/offerings';
+import { faqByIds } from '../../data/faq';
+import { SERVICES, PAYMENT } from '../../lib/services';
+import { getPosts } from '../../lib/posts';
+import { faqPage, service } from '../../lib/schema';
+
+export function getStaticPaths() {
+  return OFFERINGS.map((o) => ({ params: { service: o.slug }, props: { o } }));
+}
+const { o } = Astro.props as { o: Offering };
+const packages = o.packages.map((id) => SERVICES.find((s) => s.id === id)!);
+const faq = faqByIds(o.faq);
+const posts = (await getPosts()).filter((p) => p.data.categories.some((c) => o.categories.includes(c))).slice(0, 3);
+const gift = o.slug === 'gift';
+---
+<Page
+  title={o.title}
+  eyebrow="Consultation"
+  lede={o.lede}
+  description={o.short}
+  jsonLd={[service(o.title, o.short, `/consultations/${o.slug}/`, packages), faqPage(faq)]}
+>
+  <a slot="hero" class="btn btn-light hero-btn" href={`/book/?service=${packages[0].id}${gift ? '&gift=1' : ''}`}>
+    {gift ? 'Order a gift voucher' : 'Book a reading'}
+  </a>
+
+  <section class="wrap section two">
+    <div>
+      <p class="eyebrow">Is this for you?</p>
+      <h2>Questions people bring</h2>
+      <ul class="questions">{o.questions.map((q) => <li>{q}</li>)}</ul>
+    </div>
+    <div>
+      <p class="eyebrow">{gift ? 'How it works' : 'What we look at'}</p>
+      <h2>{gift ? 'A gift that is personal' : 'What the reading covers'}</h2>
+      <ul class="includes">{o.includes.map((q) => <li>{q}</li>)}</ul>
+      <p class="body">{o.body}</p>
+    </div>
+  </section>
+
+  <section class="band section">
+    <div class="wrap">
+      <div class="section-head">
+        <div>
+          <p class="eyebrow">{gift ? 'Choose the gift' : 'Sessions'}</p>
+          <h2>{gift ? 'Which session would you like to give?' : 'Choose your session'}</h2>
+          <p>{PAYMENT} Nothing is charged online.</p>
+        </div>
+      </div>
+      <ul class="packages">{packages.map((s, i) => <PackageCard pkg={s} highlight={packages.length > 1 && i === 1} gift={gift} />)}</ul>
+    </div>
+  </section>
+
+  <section class="wrap section steps-wrap">
+    <p class="eyebrow">How it works</p>
+    <ol class="steps">
+      {gift ? (
+        <>
+          <li><strong>Order</strong><span>Choose the session and tell me who it is for.</span></li>
+          <li><strong>Pay</strong><span>I reply with payment details and prepare the voucher.</span></li>
+          <li><strong>Give</strong><span>The voucher reaches you — or the recipient — on the day you choose.</span></li>
+        </>
+      ) : (
+        <>
+          <li><strong>Send your data</strong><span>Date, time and place of birth, and what you would like to explore.</span></li>
+          <li><strong>Agree a time</strong><span>I reply with a proposed time and payment details.</span></li>
+          <li><strong>Talk</strong><span>We meet over Zoom, WhatsApp or Skype — your chart is prepared in advance.</span></li>
+        </>
+      )}
+    </ol>
+  </section>
+
+  <section class="wrap"><Testimonials service={o.slug} /></section>
+
+  <section class="wrap section faq-wrap">
+    <h2>Questions</h2>
+    <FaqList items={faq} />
+  </section>
+
+  {posts.length > 0 && (
+    <section class="band section">
+      <div class="wrap">
+        <div class="section-head"><div><p class="eyebrow">From the journal</p><h2>Read how I approach it</h2></div></div>
+        <div class="grid">{posts.map((p) => <PostCard post={p} />)}</div>
+      </div>
+    </section>
+  )}
+
+  {!gift && <div class="wrap section"><ForecastTeaser compact heading="Curious first? Get a free forecast" /></div>}
+</Page>
+<style>
+  .hero-btn { margin-top: 28px; }
+  .two { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(32px, 6vw, 80px); }
+  .two h2 { font-size: clamp(1.6rem, 3vw, 2.2rem); }
+  .questions { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+  .questions li { padding: 16px 20px; border-radius: 12px; background: var(--accent-soft); font: italic 400 1.1rem/1.4 var(--font-text); color: var(--ink); }
+  .includes { padding-left: 1.2em; margin: 0 0 20px; color: var(--ink-soft); }
+  .includes li { margin-bottom: 8px; }
+  .includes li::marker { color: var(--accent); content: '✓  '; }
+  .body { font-family: var(--font-text); color: var(--muted); font-size: 1.05rem; }
+  .band { background: var(--surface-2); }
+  .packages { margin: 0; padding: 0; display: grid; gap: 20px; grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr)); }
+  .steps { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; counter-reset: s; }
+  .steps li { counter-increment: s; padding: 24px; border-top: 2px solid var(--accent); }
+  .steps li::before { content: counter(s, decimal-leading-zero); display: block; font: 500 0.9rem var(--font-ui); color: var(--gold); margin-bottom: 10px; }
+  .steps strong { display: block; font: 500 1.3rem var(--font-display); margin-bottom: 6px; }
+  .steps span { color: var(--muted); }
+  .faq-wrap { max-width: 900px; }
+  .faq-wrap h2 { font-size: clamp(1.8rem, 3.4vw, 2.6rem); }
+  @media (max-width: 820px) { .two, .steps { grid-template-columns: 1fr; } }
+</style>

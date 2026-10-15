@@ -4,9 +4,10 @@ import Base from '../layouts/Base.astro';
 import Page from '../layouts/Page.astro';
 import Starfield from '../components/Starfield.astro';
 import PostCard from '../components/PostCard.astro';
-import NatalAtlasSlot from '../components/natal-atlas/NatalAtlasSlot.astro';
+import ArticleCta from '../components/ArticleCta.astro';
+import { article } from '../lib/schema';
 import { getPosts, postUrl, type Post } from '../lib/posts';
-import { mediaUrl } from '../lib/media.mjs';
+import { mediaUrl, thumbUrl } from '../lib/media.mjs';
 import { categoryName, formatDate, readingTime } from '../lib/site';
 import { SERIES, SIGNS, glyph } from '../lib/zodiac';
 
@@ -59,13 +60,19 @@ const d = entry.data as Post['data'];
     <div class="wrap article-body"><div class="prose"><Content /></div></div>
   </Page>
 ) : (
-  <Base title={d.title} description={d.excerpt} image={d.image ? mediaUrl(d.image) : undefined} type="article">
+  <Base
+    title={d.title}
+    description={d.excerpt}
+    image={d.image ? mediaUrl(d.image) : undefined}
+    type="article"
+    jsonLd={article(d.title, d.excerpt, `/${d.slug}/`, d.date, d.image)}
+  >
     <article>
       <header class="post-hero">
         <Starfield count={70} seed={d.title.length} />
         <div class="wrap">
           <nav class="crumbs" aria-label="Breadcrumb">
-            <a href="/articles/">Articles</a>
+            <a href="/journal/">Journal</a>
             {d.categories[0] && <><span aria-hidden="true">/</span><a href={`/category/${d.categories[0]}/`}>{categoryName(d.categories[0])}</a></>}
           </nav>
           {sign && <p class="sign-glyph glyph" aria-hidden="true">{glyph(sign.glyph)}</p>}
@@ -75,13 +82,14 @@ const d = entry.data as Post['data'];
             <span aria-hidden="true">·</span>
             {minutes} min read
           </p>
+          {d.date.getFullYear() < 2020 && <p class="archive">From the archive — written in {d.date.getFullYear()}</p>}
         </div>
       </header>
 
       <div class="wrap article-body">
         {d.image && (
           <figure class="cover">
-            <img src={mediaUrl(d.image)} alt={d.imageAlt} decoding="async" />
+            <img src={thumbUrl(d.image, 1280)} alt={d.imageAlt} decoding="async" fetchpriority="high" />
           </figure>
         )}
         <div class="prose"><Content /></div>
@@ -92,13 +100,12 @@ const d = entry.data as Post['data'];
           </ul>
         )}
 
-        {sign && (
+        {sign && (sign.post !== d.slug || (sign.myth && sign.myth !== d.slug)) && (
           <aside class="sign-links">
             <p class="eyebrow">{sign.name} · {sign.dates} · {sign.element}</p>
             <div>
               {sign.post !== d.slug && <a class="btn btn-ghost" href={`/${sign.post}/`}>Read: {sign.name}</a>}
               {sign.myth && sign.myth !== d.slug && <a class="btn btn-ghost" href={`/${sign.myth}/`}>Read: Mythology of {sign.name}</a>}
-              <a class="btn btn-primary" href="/astrological-consultation/#order">Order your natal chart</a>
             </div>
           </aside>
         )}
@@ -113,7 +120,7 @@ const d = entry.data as Post['data'];
           </nav>
         )}
 
-        {sign && <div class="atlas"><NatalAtlasSlot context="sign" compact /></div>}
+        <ArticleCta categories={d.categories} slug={d.slug} />
       </div>
     </article>
 
@@ -144,6 +151,7 @@ const d = entry.data as Post['data'];
   .sign-glyph { font-size: 3rem; color: var(--band-accent); margin: 0 0 8px; line-height: 1; }
   h1 { font-size: clamp(2.2rem, 5.5vw, 4rem); font-weight: 400; letter-spacing: -0.025em; margin-bottom: 0.4em; }
   .meta { color: var(--band-muted); font-size: 0.9rem; display: flex; justify-content: center; gap: 10px; margin: 0; }
+  .archive { display: inline-block; margin: 14px 0 0; padding: 5px 12px; border-radius: 999px; border: 1px solid var(--band-line); color: var(--band-muted); font-size: 0.8rem; }
 
   .article-body { max-width: calc(var(--measure) + 32px); padding: clamp(40px, 6vw, 64px) 0 clamp(48px, 8vw, 96px); }
   .post-hero + .article-body { padding-top: 0; }
@@ -166,7 +174,6 @@ const d = entry.data as Post['data'];
   .series-links a:hover { border-color: var(--accent); }
   .series-links small { display: block; font: 600 0.75rem var(--font-ui); color: var(--accent); margin-bottom: 6px; letter-spacing: 0.06em; text-transform: uppercase; }
   .next { text-align: right; grid-column: 2; }
-  .atlas { margin-top: 48px; }
   .related { background: var(--surface-2); }
   @media (max-width: 560px) {
     .series-links { grid-template-columns: 1fr; }

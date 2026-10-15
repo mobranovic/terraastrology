@@ -7,10 +7,10 @@ const posts = await getPosts();
 const cats = await usedCategories();
 const years = [...new Set(posts.map((p) => p.data.date.getFullYear()))];
 ---
-<Page title="Articles" eyebrow="The archive" lede={`${posts.length} essays on signs, myths, planets and the times we live in — written since 2012.`}>
+<Page title="Journal" eyebrow="Essays since 2012" lede={`${posts.length} essays on signs, myths, planets and the times we live in — written since 2012.`}>
   <div class="wrap section">
     <ul class="chips filters" aria-label="Topics">
-      <li><a class="chip" href="/articles/" aria-current="page">All</a></li>
+      <li><a class="chip" href="/journal/" aria-current="page">All</a></li>
       {cats.map(([c, n]) => <li><a class="chip" href={`/category/${c}/`}>{categoryName(c)} <span>{n}</span></a></li>)}
     </ul>
     {years.map((y) => (

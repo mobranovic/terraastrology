@@ -1,0 +1,31 @@
+---
+import { BOOKING } from '../lib/site';
+import type { SERVICES } from '../lib/services';
+interface Props { pkg: (typeof SERVICES)[number]; highlight?: boolean; gift?: boolean }
+const { pkg, highlight = false, gift = false } = Astro.props;
+const pay = BOOKING.paymentLinks[pkg.id];
+---
+<li class:list={['pkg', { highlight }]}>
+  {highlight && <span class="badge">Most chosen</span>}
+  <h3>{pkg.name}</h3>
+  <p class="price"><strong>€{pkg.price}</strong> <span>/ {pkg.duration}</span></p>
+  <ul>{pkg.items.map((it) => <li>{it}</li>)}</ul>
+  <div class="actions">
+    <a class="btn btn-primary" href={`/book/?service=${pkg.id}${gift ? '&gift=1' : ''}`}>{gift ? 'Give this session' : 'Book this session'}</a>
+    {pay && <a class="btn btn-ghost" href={pay}>Pay now</a>}
+  </div>
+</li>
+<style>
+  .pkg { position: relative; display: flex; flex-direction: column; padding: 28px 24px 24px; border: 1px solid var(--line); border-radius: var(--radius); background: var(--surface); list-style: none; }
+  .highlight { border-color: var(--accent); box-shadow: var(--shadow); }
+  .badge { position: absolute; top: -12px; left: 24px; background: var(--accent); color: var(--accent-ink); font: 600 0.72rem/1 var(--font-ui); padding: 6px 10px; border-radius: 999px; letter-spacing: 0.04em; }
+  h3 { font-size: 1.3rem; }
+  .price strong { font: 500 2.4rem/1 var(--font-display); color: var(--accent); }
+  .price span { color: var(--muted); font-size: 0.9rem; }
+  ul { padding-left: 1.1em; margin: 0 0 24px; color: var(--ink-soft); font-size: 0.93rem; }
+  ul li { margin-bottom: 6px; }
+  ul li::marker { color: var(--gold); content: '✦  '; }
+  .actions { margin-top: auto; display: grid; gap: 8px; }
+  .btn { justify-content: center; }
+  .btn-ghost { color: var(--accent); border-color: var(--line); }
+</style>

@@ -1,0 +1,11 @@
+---
+import Page from '../layouts/Page.astro';
+import Testimonials from '../components/Testimonials.astro';
+import { TESTIMONIALS } from '../data/testimonials';
+const empty = TESTIMONIALS.length === 0;
+---
+<Page title="Client experiences" eyebrow="Testimonials" lede="What people say after a consultation." noindex={empty}>
+  <section class="wrap section">
+    {empty ? <p>Testimonials are being collected. <a href="/consultations/">See the consultations →</a></p> : <Testimonials limit={100} heading="" />}
+  </section>
+</Page>

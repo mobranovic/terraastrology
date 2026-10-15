@@ -1,10 +1,10 @@
-import { mediaUrl } from './media.mjs';
+import { mediaUrl, thumbUrl } from './media.mjs';
 
 // Resolves WordPress upload paths in Markdown and makes images lazy.
 export default function rehypeMedia() {
   const walk = (node) => {
     if (node.type === 'element' && node.tagName === 'img') {
-      node.properties.src = mediaUrl(String(node.properties.src || ''));
+      node.properties.src = thumbUrl(String(node.properties.src || ''), 1280);
       node.properties.loading = 'lazy';
       node.properties.decoding = 'async';
     }

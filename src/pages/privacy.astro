@@ -1,0 +1,75 @@
+---
+import Page from '../layouts/Page.astro';
+import { SITE } from '../lib/site';
+const updated = '15 October 2026';
+---
+<Page title="Privacy policy" eyebrow="Your data" lede={`How ${SITE.title} handles personal data. Last updated ${updated}.`}>
+  <section class="wrap section">
+    <div class="prose">
+      <h2>Who is responsible</h2>
+      <p>
+        This website is run by {SITE.author}, astrologer (“I”). For any question about your data, write to
+        <a id="mail" href="/faq/" data-u={SITE.email.user} data-d={SITE.email.domain}>{SITE.email.user} [at] {SITE.email.domain}</a>.
+      </p>
+
+      <h2>What I collect, and why</h2>
+      <ul>
+        <li>
+          <strong>Consultation orders.</strong> When you book, you send your name, e-mail, the session you chose and —
+          for the reading — your date, time and place of birth (and your partner’s, for synastry), plus anything you
+          write in the message. I use this only to arrange and prepare your consultation and to reply to you
+          (legal basis: taking steps at your request before a contract, Art. 6(1)(b) GDPR).
+        </li>
+        <li>
+          <strong>Gift vouchers.</strong> Your details and the recipient’s name, and their e-mail if you want the
+          voucher sent to them — used only to deliver the voucher.
+        </li>
+        <li>
+          <strong>Newsletter.</strong> Your e-mail (and first name, if given), used only to send the monthly
+          newsletter, based on your consent (Art. 6(1)(a) GDPR). You can unsubscribe at any time.
+        </li>
+      </ul>
+
+      <h2>The free forecast</h2>
+      <p>
+        The free forecast is calculated entirely in your own browser. The birth data you enter there is not sent to
+        any server and is not stored by me. If you go on to book, it is kept only in your browser tab to pre-fill the
+        booking form.
+      </p>
+
+      <h2>Where the data is processed</h2>
+      <p>
+        Forms on this site are delivered through Netlify, Inc., which hosts the website and processes form submissions
+        on my behalf. Correspondence takes place by e-mail. Your data is not sold, shared with third parties for
+        marketing, or used for anything other than the purposes above.
+      </p>
+
+      <h2>How long it is kept</h2>
+      <p>
+        Consultation data is kept for as long as needed to provide the consultation and answer follow-up questions,
+        and deleted on request. Newsletter addresses are kept until you unsubscribe.
+      </p>
+
+      <h2>Cookies and tracking</h2>
+      <p>
+        This site sets no advertising or tracking cookies. Fonts are served from this website itself. Embedded YouTube
+        videos use the privacy-enhanced youtube-nocookie.com domain.
+      </p>
+
+      <h2>Your rights</h2>
+      <p>
+        You have the right to access, correct or delete your data, to restrict or object to its processing, to data
+        portability, and to withdraw consent at any time. You may also lodge a complaint with a supervisory authority —
+        in Croatia, the Personal Data Protection Agency (AZOP).
+      </p>
+    </div>
+  </section>
+</Page>
+<script>
+  const a = document.getElementById('mail') as HTMLAnchorElement | null;
+  if (a) {
+    const addr = `${a.dataset.u}@${a.dataset.d}`;
+    a.href = `mailto:${addr}`;
+    a.textContent = addr;
+  }
+</script>

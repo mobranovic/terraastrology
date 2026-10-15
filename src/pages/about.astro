@@ -1,0 +1,76 @@
+---
+import { getEntry } from 'astro:content';
+import Page from '../layouts/Page.astro';
+import Testimonials from '../components/Testimonials.astro';
+import { thumbUrl } from '../lib/media.mjs';
+import { ABOUT } from '../data/about';
+import { getPosts } from '../lib/posts';
+import { person } from '../lib/schema';
+const page = (await getEntry('pages', 'about-me'))!;
+const essays = (await getPosts()).length;
+---
+<Page
+  title="About"
+  eyebrow="Marko Obranović"
+  lede="Why astrology? Because I don't feel any borders in astrology."
+  description="Marko Obranović – astrologer and author of Terra Astrology: astrology from a different perspective."
+  image={page.data.image}
+  jsonLd={person()}
+>
+  <section class="wrap section about">
+    {page.data.image && <img class="portrait" src={thumbUrl(page.data.image, 640)} alt="" decoding="async" />}
+    <div>
+      <div class="prose">
+        <p class="big">
+          This is just one approach on the subject without any intent to impose or convince. To understand it we
+          need equally to learn and to forget what we were taught and above all we must learn to use our inner voice.
+        </p>
+        {ABOUT.bio.map((p) => <p>{p}</p>)}
+        <h2>Astrology from a different perspective</h2>
+        <p>
+          I perceive astrology as something closest to the category of art. Many people today will easily type a
+          couple of basic data into an online program and get a horoscope — this is not astrology. Astrology is
+          neither infinite memorising of catalogue data on Sun signs, aspects and houses, nor arrogant rising above
+          society.
+        </p>
+        <p>
+          Astrology is here to help us on the road, to lead us to think bigger thoughts, as Dane Rudhyar said. We
+          ought to use it to the extent to which we are able to return the “gift” to society.
+        </p>
+        <h2>The journal</h2>
+        <p>
+          Since 2012 I have written {essays} essays on Terra Astrology — on the twelve signs and their myths, the
+          planetary cycles, and the times we live in. Reading a few of them is the best way to see whether my
+          approach suits what you are looking for.
+        </p>
+      </div>
+      {ABOUT.facts.length > 0 && <ul class="facts">{ABOUT.facts.map((f) => <li>{f}</li>)}</ul>}
+      <blockquote class="rudhyar">
+        <p>
+          “From the eternal and symbolical east the sun ever rises to bring to man the promise of fulfillment
+          through embodied existence. This is the gift of the Constellations to humanity: that Man-the-Spirit may
+          prove and fulfill himself in man-the-personality.”
+        </p>
+        <footer>— Dane Rudhyar</footer>
+      </blockquote>
+      <div class="actions">
+        <a class="btn btn-primary" href="/consultations/">Consultations</a>
+        <a class="btn btn-ghost" href="/journal/">Read the journal</a>
+      </div>
+    </div>
+  </section>
+  <section class="wrap section"><Testimonials /></section>
+</Page>
+<style>
+  .about { display: grid; grid-template-columns: 340px minmax(0, 1fr); gap: clamp(32px, 6vw, 72px); align-items: start; }
+  .portrait { width: 100%; aspect-ratio: 4 / 5; object-fit: cover; border-radius: var(--radius); box-shadow: var(--shadow); position: sticky; top: 100px; }
+  .big { font-size: 1.2em; color: var(--ink); }
+  .facts { list-style: none; padding: 0; margin: 32px 0; display: flex; flex-wrap: wrap; gap: 10px; }
+  .facts li { padding: 10px 16px; border-radius: 999px; background: var(--accent-soft); color: var(--accent); font-weight: 600; font-size: 0.9rem; }
+  .rudhyar { margin: 40px 0; padding: 28px; border-radius: var(--radius); background: var(--surface-2); font: italic 400 1.15rem/1.6 var(--font-text); max-width: var(--measure); }
+  .rudhyar footer { font: 500 0.9rem var(--font-ui); color: var(--muted); margin-top: 10px; }
+  .actions { display: flex; gap: 12px; flex-wrap: wrap; }
+  .btn-ghost { color: var(--accent); }
+  .section:has(> :empty) { display: none; }
+  @media (max-width: 820px) { .about { grid-template-columns: 1fr; } .portrait { position: static; max-width: 320px; } }
+</style>

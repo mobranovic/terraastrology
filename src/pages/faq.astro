@@ -1,0 +1,22 @@
+---
+import Page from '../layouts/Page.astro';
+import FaqList from '../components/FaqList.astro';
+import { FAQ } from '../data/faq';
+import { faqPage } from '../lib/schema';
+---
+<Page title="Questions" eyebrow="FAQ" lede="How consultations work, what you need, and what happens to your birth data." jsonLd={faqPage(FAQ)}>
+  <section class="wrap section narrow">
+    <FaqList items={FAQ} />
+    <div class="cta">
+      <p>Still have a question?</p>
+      <a class="btn btn-primary" href="/book/">Book a reading</a>
+      <a class="btn btn-ghost" href="/free-forecast/">Try the free forecast</a>
+    </div>
+  </section>
+</Page>
+<style>
+  .narrow { max-width: 900px; }
+  .cta { margin-top: 48px; display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
+  .cta p { margin: 0 12px 0 0; font: 500 1.3rem var(--font-display); }
+  .btn-ghost { color: var(--accent); }
+</style>

@@ -10,7 +10,7 @@ export default defineConfig({
   trailingSlash: 'always',
   build: { format: 'directory' },
   integrations: [
-    sitemap({ filter: (page) => !/\/(thank-you|natal-atlas)\/$/.test(page) }),
+    sitemap({ filter: (page) => !/\/(thank-you|newsletter\/thanks|testimonials)\/$/.test(page) }),
   ],
   markdown: {
     processor: unified({ rehypePlugins: [rehypeMedia] }),

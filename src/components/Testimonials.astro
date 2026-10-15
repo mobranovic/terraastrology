@@ -1,0 +1,28 @@
+---
+// Renders nothing until src/data/testimonials.ts has entries.
+import { TESTIMONIALS } from '../data/testimonials';
+interface Props { service?: string; limit?: number; heading?: string }
+const { service, limit = 3, heading = 'What clients say' } = Astro.props;
+const list = (service ? TESTIMONIALS.filter((t) => !t.service || t.service === service) : TESTIMONIALS).slice(0, limit);
+---
+{list.length > 0 && (
+  <section class="testimonials">
+    {heading && <h2>{heading}</h2>}
+    <ul>
+      {list.map((t) => (
+        <li>
+          <blockquote>“{t.quote}”</blockquote>
+          <p>{t.name}{t.place && <span> · {t.place}</span>}</p>
+        </li>
+      ))}
+    </ul>
+  </section>
+)}
+<style>
+  h2 { font-size: clamp(1.8rem, 3.4vw, 2.6rem); margin-bottom: 28px; }
+  ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 20px; grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr)); }
+  li { padding: 28px; border-radius: var(--radius); background: var(--surface); border: 1px solid var(--line); display: flex; flex-direction: column; }
+  blockquote { margin: 0 0 18px; font: italic 400 1.15rem/1.55 var(--font-text); color: var(--ink); }
+  p { margin: auto 0 0; font-weight: 600; font-size: 0.9rem; }
+  span { color: var(--muted); font-weight: 400; }
+</style>

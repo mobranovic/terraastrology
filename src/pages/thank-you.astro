@@ -1,6 +1,10 @@
 ---
 import Page from '../layouts/Page.astro';
 ---
-<Page title="Thank you" eyebrow="Order received" lede="Your request has been sent. I will reply by e-mail with a proposed time and payment details." noindex>
-  <div class="wrap section"><a class="btn btn-primary" href="/articles/">Read the essays meanwhile</a></div>
+<Page title="Thank you" eyebrow="Order received" lede="Your request has been sent. I will reply by e-mail with a proposed time and payment details." noindex hideCta>
+  <div class="wrap section actions">
+    <a class="btn btn-primary" href="/free-forecast/">Try the free forecast</a>
+    <a class="btn btn-ghost" href="/journal/">Read the journal</a>
+  </div>
 </Page>
+<style>.actions { display: flex; gap: 12px; flex-wrap: wrap; } .btn-ghost { color: var(--accent); }</style>

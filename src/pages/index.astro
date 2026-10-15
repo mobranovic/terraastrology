@@ -1,147 +1,159 @@
 ---
+import { getEntry } from 'astro:content';
 import Base from '../layouts/Base.astro';
 import Starfield from '../components/Starfield.astro';
 import ZodiacWheel from '../components/ZodiacWheel.astro';
 import PostCard from '../components/PostCard.astro';
-import NatalAtlasSlot from '../components/natal-atlas/NatalAtlasSlot.astro';
-import { getPosts, postsInCategory } from '../lib/posts';
+import PackageCard from '../components/PackageCard.astro';
+import Testimonials from '../components/Testimonials.astro';
+import FaqList from '../components/FaqList.astro';
+import ForecastTeaser from '../components/natal-atlas/ForecastTeaser.astro';
+import { getPosts } from '../lib/posts';
+import { thumbUrl } from '../lib/media.mjs';
 import { SIGNS, glyph } from '../lib/zodiac';
-import { SERVICES } from '../lib/services';
+import { SERVICES, PAYMENT } from '../lib/services';
+import { faqByIds } from '../data/faq';
+import { faqPage, person, website } from '../lib/schema';
 
 const posts = await getPosts();
 const featured = posts.filter((p) => p.data.featured).slice(0, 3);
-const latest = posts.filter((p) => !featured.includes(p)).slice(0, 6);
-const myths = await postsInCategory('12-myths-of-the-zodiac');
-const planets = await postsInCategory('planets');
-const mundane = await postsInCategory('mundane-astrology');
-const love = await postsInCategory('love-astrology');
+const about = (await getEntry('pages', 'about-me'))!;
+const faq = faqByIds(['how-session', 'which', 'birth-time', 'predict']);
+const minPrice = Math.min(...SERVICES.map((s) => s.price));
 
-const themes = [
-  { href: '/sun-signs/', title: 'Sun Signs', text: 'The twelve signs as phases of the solar year — not boxes, but stages of growth.', count: 12 },
-  { href: '/12-myths-zodiac/', title: 'Myths of the Zodiac', text: 'The stories the ancients wrote into the constellations, and what they still say.', count: myths.length },
-  { href: '/category/planets/', title: 'Planets & Cycles', text: 'Saturn, Neptune, Pluto and the long rhythms that shape eras and lives.', count: planets.length },
-  { href: '/mundane-astrology/', title: 'Mundane Astrology', text: 'Crises, economies and turning points of history read through the sky.', count: mundane.length },
-  { href: '/love-astrology/', title: 'Love Astrology', text: 'Relationships, synastry and the illusions we project onto each other.', count: love.length },
-  { href: '/location-astrology/', title: 'Location Astrology', text: 'How places on the map resonate with your birth chart.', count: null },
+const questions = [
+  { q: 'Why do the same patterns keep repeating in my life?', href: '/consultations/natal-chart/', label: 'Natal chart reading' },
+  { q: 'What is this relationship really about?', href: '/consultations/synastry/', label: 'Relationship reading' },
+  { q: 'Should I move — and where would I thrive?', href: '/consultations/location-astrology/', label: 'Location astrology' },
+  { q: 'What is this period of my life asking of me?', href: '/free-forecast/', label: 'Start with a free forecast' },
 ];
 ---
-<Base>
+<Base jsonLd={[website(), person(), faqPage(faq)]}>
   <section class="hero">
     <Starfield count={120} />
     <div class="wrap hero-grid">
       <div class="copy">
-        <p class="eyebrow">Terra Astrology</p>
-        <h1>Astrology from a <em>different</em> perspective</h1>
+        <p class="eyebrow">Terra Astrology · Marko Obranović</p>
+        <h1>Understand your life through <em>your own</em> chart</h1>
         <p class="lede">
-          Essays on the signs, their myths and the great planetary cycles — written for those who want to
-          understand the language of the sky, not just read their horoscope.
+          Personal natal chart readings — not an algorithm, but a conversation about who you are and what this
+          period of your life is asking of you. Live over Zoom, WhatsApp or Skype, wherever you are.
         </p>
         <div class="actions">
-          <a class="btn btn-light" href="/sun-signs/">Start with the signs</a>
-          <a class="btn btn-ghost" href="/astrological-consultation/">Book a consultation</a>
+          <a class="btn btn-primary" href="/book/">Book a reading</a>
+          <a class="btn btn-ghost" href="/free-forecast/">Get a free forecast</a>
         </div>
+        <ul class="trust">
+          <li>Sessions from €{minPrice}</li>
+          <li>{posts.length} essays since 2012</li>
+          <li>Worldwide, online</li>
+        </ul>
       </div>
-      <div class="wheel-wrap">
-        <ZodiacWheel />
-      </div>
-    </div>
-  </section>
-
-  {featured.length > 0 && (
-    <section class="section wrap">
-      <div class="section-head">
-        <div>
-          <p class="eyebrow">Featured</p>
-          <h2>Essays worth starting with</h2>
-        </div>
-        <a class="link-arrow" href="/articles/">All {posts.length} articles →</a>
-      </div>
-      <div class="featured">
-        {featured.map((p, i) => <PostCard post={p} large={i === 0} />)}
-      </div>
-    </section>
-  )}
-
-  <section class="section themes-band">
-    <div class="wrap">
-      <div class="section-head">
-        <div>
-          <p class="eyebrow">Explore</p>
-          <h2>Six ways into the sky</h2>
-        </div>
-      </div>
-      <ul class="themes">
-        {themes.map((t, i) => (
-          <li>
-            <a href={t.href}>
-              <span class="num">{String(i + 1).padStart(2, '0')}</span>
-              <h3>{t.title}</h3>
-              <p>{t.text}</p>
-              {t.count ? <span class="count">{t.count} essays</span> : <span class="count">Read more</span>}
-            </a>
-          </li>
-        ))}
-      </ul>
+      <div class="wheel-wrap"><ZodiacWheel /></div>
     </div>
   </section>
 
   <section class="section wrap">
     <div class="section-head">
       <div>
-        <p class="eyebrow">The twelve signs</p>
-        <h2>Find your sign</h2>
-        <p>Each sign is a chapter in one continuous story of the solar year.</p>
+        <p class="eyebrow">Is this for you?</p>
+        <h2>The questions people bring</h2>
       </div>
-      <a class="link-arrow" href="/sun-signs/">About the signs →</a>
     </div>
-    <ul class="signs">
-      {SIGNS.map((s) => (
+    <ul class="questions">
+      {questions.map((x) => (
         <li>
-          <a href={`/${s.post}/`}>
-            <span class="glyph">{glyph(s.glyph)}</span>
-            <strong>{s.name}</strong>
-            <small>{s.dates}</small>
+          <a href={x.href}>
+            <span class="q">“{x.q}”</span>
+            <span class="to">{x.label} →</span>
           </a>
         </li>
       ))}
     </ul>
   </section>
 
-  <section class="section wrap latest">
+  <section class="section band">
+    <div class="wrap">
+      <div class="section-head">
+        <div>
+          <p class="eyebrow">How it works</p>
+          <h2>Three simple steps</h2>
+        </div>
+      </div>
+      <ol class="steps">
+        <li><strong>Send your birth data</strong><span>Date, time and place of birth, and the questions on your mind.</span></li>
+        <li><strong>Agree a time</strong><span>I reply with a proposed time and payment details, and prepare your chart in advance.</span></li>
+        <li><strong>Talk it through</strong><span>A live conversation over Zoom, WhatsApp or Skype — about your chart and your life.</span></li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="section wrap" id="sessions">
     <div class="section-head">
       <div>
-        <p class="eyebrow">From the archive</p>
-        <h2>Recent essays</h2>
+        <p class="eyebrow">Sessions</p>
+        <h2>Choose your reading</h2>
+        <p>{PAYMENT} Nothing is charged online.</p>
       </div>
-      <a class="link-arrow" href="/articles/">Browse all →</a>
+      <a class="link-arrow" href="/consultations/">Compare the readings →</a>
     </div>
-    <div class="grid">{latest.map((p) => <PostCard post={p} />)}</div>
+    <ul class="packages">{SERVICES.map((s, i) => <PackageCard pkg={s} highlight={i === 1} />)}</ul>
+    <p class="gift">Looking for a meaningful present? <a href="/consultations/gift/">Give a reading as a gift →</a></p>
   </section>
 
-  <section class="section wrap consult">
-    <div class="consult-copy">
-      <p class="eyebrow">Consultations</p>
-      <h2>A personal reading of your natal chart</h2>
-      <p>
-        Live sessions over Zoom, WhatsApp or Skype — from a focused 30-minute overview to an extended
-        analysis with synastry and location astrology.
-      </p>
-      <a class="btn btn-primary" href="/astrological-consultation/#order">Order a natal chart reading</a>
+  <section class="wrap"><Testimonials /></section>
+
+  <section class="wrap section"><ForecastTeaser /></section>
+
+  <section class="section band">
+    <div class="wrap about">
+      {about.data.image && <img src={thumbUrl(about.data.image, 640)} alt="" loading="lazy" decoding="async" />}
+      <div>
+        <p class="eyebrow">About</p>
+        <h2>Astrology from a different perspective</h2>
+        <p class="quote">
+          “Why astrology? Because I don't feel any borders in astrology. This is just one approach on the subject
+          without any intent to impose or convince.”
+        </p>
+        <p>
+          I perceive astrology as closest to the category of art — a language of symbols that helps us, in Dane
+          Rudhyar's words, to think bigger thoughts. Since 2012 I have written about the signs, their myths and the
+          great planetary cycles in the journal on this site.
+        </p>
+        <a class="link-arrow" href="/about/">More about me →</a>
+      </div>
     </div>
-    <ul class="prices">
-      {SERVICES.map((s) => (
-        <li>
-          <a href={`/astrological-consultation/?service=${s.id}#order`}>
-            <span>{s.name}<small>{s.duration}</small></span>
-            <strong>€{s.price}</strong>
-          </a>
-        </li>
+  </section>
+
+  <section class="section wrap">
+    <div class="section-head">
+      <div>
+        <p class="eyebrow">From the journal</p>
+        <h2>Essays worth starting with</h2>
+      </div>
+      <a class="link-arrow" href="/journal/">All {posts.length} essays →</a>
+    </div>
+    <div class="grid">{featured.map((p) => <PostCard post={p} />)}</div>
+    <ul class="signs" aria-label="The twelve signs">
+      {SIGNS.map((s) => (
+        <li><a href={`/${s.post}/`}><span class="glyph">{glyph(s.glyph)}</span>{s.name}</a></li>
       ))}
     </ul>
   </section>
 
-  <section class="wrap atlas-band">
-    <NatalAtlasSlot context="home" />
+  <section class="section wrap faq-wrap">
+    <h2>Questions</h2>
+    <FaqList items={faq} />
+    <p class="more"><a class="link-arrow" href="/faq/">All questions →</a></p>
+  </section>
+
+  <section class="final deep">
+    <Starfield count={60} seed={9} />
+    <div class="wrap">
+      <h2>Ready to look at your chart together?</h2>
+      <p>Send your birth data and your questions — I will reply with a time that suits you.</p>
+      <a class="btn btn-light" href="/book/">Book a reading</a>
+    </div>
   </section>
 </Base>
 
@@ -153,114 +165,72 @@ const themes = [
       radial-gradient(60% 80% at 75% 40%, var(--glow), transparent 70%),
       radial-gradient(140% 140% at 80% 0%, var(--band-2), var(--band) 65%);
     color: var(--band-ink);
-    padding: clamp(56px, 9vw, 120px) 0;
+    padding: clamp(48px, 8vw, 104px) 0;
   }
-  .hero-grid {
-    position: relative;
-    display: grid;
-    grid-template-columns: 1.15fr 1fr;
-    align-items: center;
-    gap: clamp(32px, 6vw, 80px);
-  }
+  .hero-grid { position: relative; display: grid; grid-template-columns: 1.2fr 1fr; align-items: center; gap: clamp(32px, 6vw, 80px); }
   .hero .eyebrow { color: var(--band-accent); }
-  h1 {
-    font-size: clamp(2.6rem, 6.4vw, 5.2rem);
-    font-weight: 400;
-    letter-spacing: -0.03em;
-    margin-bottom: 0.35em;
-  }
+  h1 { font-size: clamp(2.5rem, 5.8vw, 4.6rem); font-weight: 400; letter-spacing: -0.03em; margin-bottom: 0.35em; }
   h1 em { color: var(--band-accent); font-style: italic; }
-  .lede {
-    font-family: var(--font-text);
-    font-size: clamp(1.1rem, 1.6vw, 1.3rem);
-    color: var(--band-muted);
-    max-width: 50ch;
-  }
-  .actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 32px; }
+  .lede { font-family: var(--font-text); font-size: clamp(1.1rem, 1.6vw, 1.3rem); color: var(--band-muted); max-width: 52ch; }
+  .actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 30px; }
   .hero .btn-ghost { color: var(--band-ink); }
-  .wheel-wrap { max-width: 480px; width: 100%; justify-self: center; }
+  .trust { list-style: none; padding: 0; margin: 28px 0 0; display: flex; flex-wrap: wrap; gap: 8px 22px; font-size: 0.88rem; color: var(--band-muted); }
+  .trust li::before { content: '✦'; color: var(--band-accent); margin-right: 8px; }
+  .wheel-wrap { max-width: 460px; width: 100%; justify-self: center; }
 
-  .featured {
-    display: grid;
-    grid-template-columns: 1.6fr 1fr;
-    grid-template-rows: auto auto;
-    gap: 24px;
-  }
-  .featured > :global(:first-child) { grid-row: span 2; }
-
-  .themes-band { background: var(--surface-2); }
-  .themes {
-    list-style: none; margin: 0; padding: 0;
-    display: grid; gap: 1px;
-    grid-template-columns: repeat(3, 1fr);
-    background: var(--line);
-    border: 1px solid var(--line);
-    border-radius: var(--radius);
-    overflow: hidden;
-  }
-  .themes a {
-    display: flex; flex-direction: column; height: 100%;
-    padding: 28px 28px 24px;
-    background: var(--surface);
-    text-decoration: none;
-    transition: background 0.2s;
-  }
-  .themes a:hover { background: var(--bg); }
-  .themes a:hover h3 { color: var(--accent); }
-  .num { font: 500 0.85rem var(--font-ui); color: var(--gold); margin-bottom: 18px; }
-  .themes h3 { font-size: 1.5rem; transition: color 0.2s; }
-  .themes p { color: var(--muted); font-family: var(--font-text); }
-  .count { margin-top: auto; font-size: 0.82rem; font-weight: 600; color: var(--accent); }
-
-  .signs {
-    list-style: none; margin: 0; padding: 0;
-    display: grid; gap: 12px;
-    grid-template-columns: repeat(6, 1fr);
-  }
-  .signs a {
-    display: grid; justify-items: center; gap: 4px;
-    padding: 22px 8px 18px;
-    border: 1px solid var(--line);
-    border-radius: var(--radius);
-    background: var(--surface);
-    text-decoration: none;
-    text-align: center;
+  .questions { list-style: none; margin: 0; padding: 0; display: grid; gap: 16px; grid-template-columns: repeat(2, 1fr); }
+  .questions a {
+    display: flex; flex-direction: column; gap: 18px; height: 100%; padding: 28px;
+    border-radius: var(--radius); border: 1px solid var(--line); background: var(--surface); text-decoration: none;
     transition: border-color 0.2s, transform 0.2s;
   }
-  .signs a:hover { border-color: var(--accent); transform: translateY(-2px); }
-  .signs .glyph { font-size: 2rem; line-height: 1.2; color: var(--accent); }
-  .signs strong { font: 500 1.1rem var(--font-display); }
-  .signs small { font-size: 0.75rem; color: var(--muted); }
+  .questions a:hover { border-color: var(--accent); transform: translateY(-2px); }
+  .q { font: italic 400 clamp(1.2rem, 2vw, 1.5rem)/1.35 var(--font-text); color: var(--ink); }
+  .to { margin-top: auto; color: var(--accent); font-weight: 600; font-size: 0.92rem; }
 
-  .consult {
-    display: grid; grid-template-columns: 1fr 1fr; gap: clamp(32px, 6vw, 72px); align-items: center;
-    border-top: 1px solid var(--line);
+  .band { background: var(--surface-2); }
+  .steps { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; counter-reset: s; }
+  .steps li { counter-increment: s; padding: 26px 24px; border-radius: var(--radius); background: var(--surface); border: 1px solid var(--line); }
+  .steps li::before { content: counter(s, decimal-leading-zero); display: block; font: 500 2rem/1 var(--font-display); color: var(--accent); margin-bottom: 14px; }
+  .steps strong { display: block; font: 500 1.3rem var(--font-display); margin-bottom: 6px; }
+  .steps span { color: var(--muted); }
+
+  .packages { margin: 0; padding: 0; display: grid; gap: 20px; grid-template-columns: repeat(auto-fit, minmax(min(100%, 250px), 1fr)); }
+  .gift { margin-top: 24px; color: var(--muted); }
+  .gift a { color: var(--accent); font-weight: 600; text-decoration: none; }
+
+  .about { display: grid; grid-template-columns: 300px 1fr; gap: clamp(32px, 6vw, 72px); align-items: center; }
+  .about img { width: 100%; aspect-ratio: 4 / 5; object-fit: cover; border-radius: var(--radius); box-shadow: var(--shadow); }
+  .about h2 { font-size: clamp(1.8rem, 3.4vw, 2.6rem); }
+  .about p:not(.eyebrow) { font-family: var(--font-text); color: var(--ink-soft); font-size: 1.08rem; max-width: 60ch; }
+  .about .quote { font-style: italic; font-size: 1.25rem; color: var(--ink); }
+
+  .signs { list-style: none; margin: 32px 0 0; padding: 0; display: flex; flex-wrap: wrap; gap: 8px; }
+  .signs a { display: inline-flex; align-items: center; gap: 8px; padding: 8px 14px; border-radius: 999px; border: 1px solid var(--line); background: var(--surface); text-decoration: none; font-size: 0.9rem; }
+  .signs a:hover { border-color: var(--accent); color: var(--accent); }
+  .signs .glyph { color: var(--accent); }
+
+  .faq-wrap { max-width: 900px; }
+  .faq-wrap h2 { font-size: clamp(1.8rem, 3.4vw, 2.6rem); }
+  .more { margin-top: 20px; }
+
+  .final {
+    position: relative; overflow: hidden; text-align: center;
+    background: radial-gradient(120% 140% at 50% 0%, var(--band-2), var(--band));
+    color: var(--band-ink); padding: clamp(64px, 9vw, 112px) 0;
   }
-  .consult h2 { font-size: clamp(1.9rem, 3.6vw, 2.8rem); }
-  .consult-copy p:not(.eyebrow) { color: var(--muted); font-family: var(--font-text); font-size: 1.1rem; }
-  .prices { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
-  .prices a {
-    display: flex; justify-content: space-between; align-items: center; gap: 16px;
-    padding: 18px 22px; border-radius: 12px; border: 1px solid var(--line); background: var(--surface);
-    text-decoration: none; transition: border-color 0.2s;
-  }
-  .prices a:hover { border-color: var(--accent); }
-  .prices span { font-weight: 600; }
-  .prices small { display: block; font-weight: 400; color: var(--muted); font-size: 0.85rem; }
-  .prices strong { font: 500 1.6rem var(--font-display); color: var(--accent); }
-  .atlas-band { padding-bottom: clamp(56px, 8vw, 104px); }
+  .final .wrap { position: relative; }
+  .final h2 { font-size: clamp(2rem, 4.4vw, 3.2rem); max-width: 20ch; margin-inline: auto; }
+  .final p { color: var(--band-muted); font-family: var(--font-text); font-size: 1.15rem; }
 
   @media (max-width: 960px) {
     .hero-grid { grid-template-columns: 1fr; }
-    .wheel-wrap { max-width: 360px; }
-    .featured { grid-template-columns: 1fr; }
-    .featured > :global(:first-child) { grid-row: auto; }
-    .themes { grid-template-columns: 1fr 1fr; }
-    .signs { grid-template-columns: repeat(4, 1fr); }
-    .consult { grid-template-columns: 1fr; }
+    .wheel-wrap { max-width: 340px; }
+    .steps { grid-template-columns: 1fr; }
+    .about { grid-template-columns: 1fr; }
+    .about img { max-width: 280px; }
   }
-  @media (max-width: 600px) {
-    .themes { grid-template-columns: 1fr; }
-    .signs { grid-template-columns: repeat(3, 1fr); }
+  @media (max-width: 640px) {
+    .questions { grid-template-columns: 1fr; }
   }
 </style>

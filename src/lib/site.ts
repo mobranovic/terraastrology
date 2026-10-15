@@ -11,24 +11,27 @@ export const SITE = {
 };
 
 export const NAV = [
-  { href: '/sun-signs/', label: 'Sun Signs' },
-  { href: '/articles/', label: 'Articles' },
-  { href: '/love-astrology/', label: 'Love' },
-  { href: '/mundane-astrology/', label: 'Mundane' },
-  { href: '/location-astrology/', label: 'Location' },
-  { href: '/about-me/', label: 'About' },
+  { href: '/consultations/', label: 'Consultations' },
+  { href: '/free-forecast/', label: 'Free forecast' },
+  { href: '/journal/', label: 'Journal' },
+  { href: '/about/', label: 'About' },
+  { href: '/faq/', label: 'FAQ' },
 ];
 
 /**
- * Natal Atlas integration – placeholder.
- * Flip `enabled` to true and fill `features` once you decide which parts of
- * the app to bring in. Every <NatalAtlasSlot> on the site reads from here.
+ * Online booking and payment – fill these in when the accounts exist.
+ * calUrl:       public scheduling link (e.g. https://cal.com/terra-astrology).
+ *               When set, /book/ shows a "Pick a time" step.
+ * paymentLinks: Stripe / PayPal payment links per service id from services.ts.
+ *               When set, the service cards show a "Pay now" button.
  */
-export const NATAL_ATLAS = {
-  enabled: false,
-  appUrl: '',
-  features: [] as { id: string; title: string; description: string }[],
+export const BOOKING = {
+  calUrl: '',
+  paymentLinks: {} as Record<string, string>,
 };
+
+/** Privacy-friendly analytics (Plausible). Empty = no analytics script at all. */
+export const ANALYTICS = { plausibleDomain: '' };
 
 export const categoryName = (slug: string) => (categories as Record<string, string>)[slug] ?? slug;
 

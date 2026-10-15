@@ -1,0 +1,73 @@
+---
+import Page from '../../layouts/Page.astro';
+import PackageCard from '../../components/PackageCard.astro';
+import Testimonials from '../../components/Testimonials.astro';
+import FaqList from '../../components/FaqList.astro';
+import ForecastTeaser from '../../components/natal-atlas/ForecastTeaser.astro';
+import { OFFERINGS } from '../../data/offerings';
+import { SERVICES, PAYMENT } from '../../lib/services';
+import { faqByIds } from '../../data/faq';
+import { faqPage, service } from '../../lib/schema';
+const faq = faqByIds(['which', 'how-session', 'birth-time', 'payment']);
+---
+<Page
+  title="Consultations"
+  eyebrow="Personal readings"
+  lede="Live, one-to-one conversations about your chart — over Zoom, WhatsApp or Skype, wherever you are."
+  description="Natal chart readings, relationship readings (synastry), location astrology and gift vouchers with astrologer Marko Obranović."
+  jsonLd={[service('Astrological consultations', 'Natal chart, synastry and location astrology readings.', '/consultations/', SERVICES), faqPage(faq)]}
+>
+  <section class="wrap section">
+    <ul class="offerings">
+      {OFFERINGS.map((o, i) => (
+        <li>
+          <a href={`/consultations/${o.slug}/`}>
+            <span class="num">{String(i + 1).padStart(2, '0')}</span>
+            <h2>{o.title}</h2>
+            <p>{o.short}</p>
+            <span class="more">Learn more →</span>
+          </a>
+        </li>
+      ))}
+    </ul>
+  </section>
+
+  <section class="band section">
+    <div class="wrap">
+      <div class="section-head">
+        <div>
+          <p class="eyebrow">Sessions & prices</p>
+          <h2>Choose your session</h2>
+          <p>{PAYMENT} Nothing is charged online.</p>
+        </div>
+      </div>
+      <ul class="packages">{SERVICES.map((s, i) => <PackageCard pkg={s} highlight={i === 1} />)}</ul>
+    </div>
+  </section>
+
+  <section class="wrap section"><Testimonials /></section>
+
+  <section class="wrap section faq-wrap">
+    <h2>Before you book</h2>
+    <FaqList items={faq} />
+    <p class="more-faq"><a class="link-arrow" href="/faq/">All questions →</a></p>
+  </section>
+
+  <div class="wrap section"><ForecastTeaser heading="Not sure yet? Start with a free forecast" /></div>
+</Page>
+<style>
+  .offerings { list-style: none; margin: 0; padding: 0; display: grid; gap: 20px; grid-template-columns: repeat(auto-fit, minmax(min(100%, 250px), 1fr)); }
+  .offerings a { display: flex; flex-direction: column; height: 100%; padding: 28px; border-radius: var(--radius); border: 1px solid var(--line); background: var(--surface); text-decoration: none; transition: border-color 0.2s, transform 0.2s; }
+  .offerings a:hover { border-color: var(--accent); transform: translateY(-2px); }
+  .num { color: var(--gold); font-weight: 500; font-size: 0.85rem; margin-bottom: 16px; }
+  .offerings h2 { font-size: 1.45rem; }
+  .offerings p { color: var(--muted); font-family: var(--font-text); }
+  .more { margin-top: auto; color: var(--accent); font-weight: 600; font-size: 0.9rem; }
+  .band { background: var(--surface-2); }
+  .packages { margin: 0; padding: 0; display: grid; gap: 20px; grid-template-columns: repeat(auto-fit, minmax(min(100%, 250px), 1fr)); }
+  .faq-wrap { max-width: 900px; }
+  .faq-wrap h2 { font-size: clamp(1.8rem, 3.4vw, 2.6rem); }
+  .more-faq { margin-top: 20px; }
+  .section:has(> :global(.testimonials)) { padding-bottom: 0; }
+  .section:empty { display: none; }
+</style>

@@ -5,3 +5,4 @@ dist/
 .DS_Store
 # The raw WordPress export contains emails and site internals – keep it local.
 .wp-export/
+public/thumbs/

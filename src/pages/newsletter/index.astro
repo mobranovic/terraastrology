@@ -1,0 +1,40 @@
+---
+import Page from '../../layouts/Page.astro';
+import PostCard from '../../components/PostCard.astro';
+import { getPosts } from '../../lib/posts';
+const recent = (await getPosts()).filter((p) => p.data.categories.some((c) => ['mundane-astrology', 'eclipse', 'planets'].includes(c))).slice(0, 3);
+---
+<Page title="Monthly sky notes" eyebrow="Newsletter" lede="Eclipses, retrogrades and the big planetary cycles — a short letter once a month, and new essays when they appear.">
+  <section class="wrap section narrow">
+    <form name="newsletter" method="POST" action="/newsletter/thanks/" data-netlify="true" netlify-honeypot="company" class="news">
+      <input type="hidden" name="form-name" value="newsletter" />
+      <input type="hidden" name="source" value="newsletter-page" />
+      <p class="visually-hidden"><label>Leave empty <input name="company" tabindex="-1" autocomplete="off" /></label></p>
+      <div class="row">
+        <label>First name <span>(optional)</span><input name="name" autocomplete="given-name" /></label>
+        <label>E-mail<input type="email" name="email" required autocomplete="email" /></label>
+      </div>
+      <label class="check"><input type="checkbox" name="consent" value="yes" required /> <span>I agree to receive the newsletter and can unsubscribe at any time (<a href="/privacy/">privacy policy</a>).</span></label>
+      <button class="btn btn-primary" type="submit">Subscribe</button>
+    </form>
+  </section>
+  {recent.length > 0 && (
+    <section class="wrap section">
+      <div class="section-head"><div><p class="eyebrow">In the meantime</p><h2>Essays on the cycles</h2></div></div>
+      <div class="grid">{recent.map((p) => <PostCard post={p} />)}</div>
+    </section>
+  )}
+</Page>
+<style>
+  .narrow { max-width: 760px; }
+  .news { display: grid; gap: 18px; padding: clamp(22px, 4vw, 36px); border-radius: calc(var(--radius) + 4px); background: var(--surface); border: 1px solid var(--line); box-shadow: var(--shadow); }
+  .row { display: grid; grid-template-columns: 1fr 1.4fr; gap: 16px; }
+  label { display: grid; gap: 6px; font-size: 0.88rem; font-weight: 500; color: var(--ink-soft); }
+  label span { color: var(--muted); font-weight: 400; }
+  input:not([type='checkbox']) { font: 400 1rem var(--font-ui); color: var(--ink); background: var(--bg); border: 1px solid var(--line); border-radius: 10px; padding: 0.8em 0.9em; }
+  .check { display: flex; gap: 10px; align-items: center; font-weight: 400; }
+  .check input { accent-color: var(--accent); width: 18px; height: 18px; flex: none; }
+  .check a { color: var(--accent); }
+  .news .btn { justify-self: start; }
+  @media (max-width: 640px) { .row { grid-template-columns: 1fr; } }
+</style>

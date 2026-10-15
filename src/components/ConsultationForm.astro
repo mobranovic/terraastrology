@@ -17,7 +17,7 @@ import { SERVICES, PLATFORMS } from '../lib/services';
   <p class="visually-hidden"><label>Leave empty <input name="company" tabindex="-1" autocomplete="off" /></label></p>
 
   <fieldset>
-    <legend>1 · Choose a session</legend>
+    <legend>Choose a session</legend>
     <div class="options">
       {SERVICES.map((s, i) => (
         <label class="option">
@@ -26,14 +26,19 @@ import { SERVICES, PLATFORMS } from '../lib/services';
         </label>
       ))}
     </div>
+    <label class="check gift-toggle"><input type="checkbox" name="gift" value="yes" /> This is a gift for someone else</label>
   </fieldset>
 
   <fieldset>
-    <legend>2 · Your birth data</legend>
+    <legend>Your details</legend>
     <div class="row">
       <label>Full name<input name="name" autocomplete="name" required /></label>
       <label>E-mail<input type="email" name="email" autocomplete="email" required /></label>
     </div>
+  </fieldset>
+
+  <fieldset class="for-self birth">
+    <legend>Your birth data</legend>
     <div class="row three">
       <label>Date of birth<input type="date" name="birth_date" required /></label>
       <label>Time of birth<input type="time" name="birth_time" /></label>
@@ -42,8 +47,8 @@ import { SERVICES, PLATFORMS } from '../lib/services';
     <label class="check"><input type="checkbox" name="birth_time_unknown" value="yes" /> I don't know my exact birth time</label>
   </fieldset>
 
-  <fieldset class="partner" hidden>
-    <legend>3 · Partner's birth data <span>(for synastry)</span></legend>
+  <fieldset class="for-self partner" hidden>
+    <legend>Partner's birth data <span>(for synastry)</span></legend>
     <div class="row">
       <label>Name<input name="partner_name" /></label>
       <label>Place of birth<input name="partner_birth_place" placeholder="City, country" /></label>
@@ -54,8 +59,23 @@ import { SERVICES, PLATFORMS } from '../lib/services';
     </div>
   </fieldset>
 
-  <fieldset>
-    <legend><span class="step-last">3</span> · Session</legend>
+  <fieldset class="for-gift" hidden>
+    <legend>The gift</legend>
+    <div class="row">
+      <label>Recipient's name<input name="gift_recipient" required /></label>
+      <label>Voucher should arrive on<input type="date" name="gift_date" /></label>
+    </div>
+    <div class="row">
+      <label>Send the voucher to
+        <select name="gift_send_to"><option>Me</option><option>The recipient</option></select>
+      </label>
+      <label>Recipient's e-mail <span class="opt">(if sent to them)</span><input type="email" name="gift_recipient_email" /></label>
+    </div>
+    <label>A personal message for the voucher <span class="opt">(optional)</span><textarea name="gift_message" rows="3"></textarea></label>
+  </fieldset>
+
+  <fieldset class="for-self">
+    <legend>Session</legend>
     <div class="row">
       <label>Preferred platform
         <select name="platform">{PLATFORMS.map((p) => <option>{p}</option>)}</select>
@@ -65,7 +85,7 @@ import { SERVICES, PLATFORMS } from '../lib/services';
     <label>What would you like to focus on?<textarea name="message" rows="4" placeholder="Questions, life areas or periods you are curious about"></textarea></label>
   </fieldset>
 
-  <label class="check consent"><input type="checkbox" name="consent" value="yes" required /> I agree that my birth data is used only to prepare this consultation.</label>
+  <label class="check consent"><input type="checkbox" name="consent" value="yes" required /> <span>I agree that my data is used only to prepare this consultation (see the <a href="/privacy/">privacy policy</a>).</span></label>
   <button class="btn btn-primary" type="submit">Send order</button>
   <p class="note">You will receive a reply with a proposed time and payment details. Nothing is charged online.</p>
 </form>
@@ -73,17 +93,38 @@ import { SERVICES, PLATFORMS } from '../lib/services';
 <script>
   const form = document.querySelector<HTMLFormElement>('form.order')!;
   const partner = form.querySelector<HTMLFieldSetElement>('.partner')!;
-  const lastStep = form.querySelector('.step-last')!;
+  const giftBox = form.querySelector<HTMLInputElement>('input[name="gift"]')!;
+  const show = (fs: HTMLFieldSetElement, on: boolean) => {
+    fs.hidden = !on;
+    fs.disabled = !on; // disabled fields are neither validated nor submitted
+  };
   const sync = () => {
     const chosen = form.querySelector<HTMLInputElement>('input[name="service"]:checked');
-    const needs = chosen?.dataset.partner === '1';
-    partner.hidden = !needs;
-    lastStep.textContent = needs ? '4' : '3';
+    const gift = giftBox.checked;
+    form.querySelectorAll<HTMLFieldSetElement>('.for-self').forEach((fs) => show(fs, !gift));
+    form.querySelectorAll<HTMLFieldSetElement>('.for-gift').forEach((fs) => show(fs, gift));
+    show(partner, !gift && chosen?.dataset.partner === '1');
   };
-  // /astrological-consultation/?service=synastry#order preselects a package.
-  const wanted = new URLSearchParams(location.search).get('service');
+
+  // /book/?service=synastry&gift=1 preselects a package and gift mode.
+  const params = new URLSearchParams(location.search);
+  const wanted = params.get('service');
   const radio = wanted && form.querySelector<HTMLInputElement>(`input[data-id="${CSS.escape(wanted)}"]`);
   if (radio) radio.checked = true;
+  if (params.get('gift') === '1') giftBox.checked = true;
+
+  // Birth data entered in the free forecast (kept only for this browser tab).
+  try {
+    const b = JSON.parse(sessionStorage.getItem('ta-birth') ?? 'null');
+    if (b) {
+      const set = (n: string, v: string) => { const el = form.elements.namedItem(n) as HTMLInputElement; if (el && !el.value) el.value = v; };
+      set('birth_date', b.date);
+      if (b.time) set('birth_time', b.time);
+      else (form.elements.namedItem('birth_time_unknown') as HTMLInputElement).checked = true;
+      set('birth_place', b.place);
+    }
+  } catch {}
+
   form.addEventListener('change', sync);
   sync();
 </script>
@@ -92,8 +133,13 @@ import { SERVICES, PLATFORMS } from '../lib/services';
   .order { display: grid; gap: 28px; }
   fieldset { border: 0; padding: 0; margin: 0; display: grid; gap: 16px; }
   fieldset[hidden] { display: none; }
+  .order { counter-reset: step; }
+  fieldset:not([hidden]) { counter-increment: step; }
   legend { font: 500 1.3rem/1.2 var(--font-display); margin-bottom: 14px; padding: 0; }
-  legend span:not(.step-last) { font: 400 0.9rem var(--font-ui); color: var(--muted); }
+  legend::before { content: counter(step) ' · '; }
+  legend span, .opt { font: 400 0.85rem var(--font-ui); color: var(--muted); }
+  .gift-toggle { margin-top: 4px; }
+  .consent a { color: var(--accent); }
   .options { display: grid; gap: 10px; grid-template-columns: repeat(auto-fill, minmax(min(100%, 220px), 1fr)); }
   .option {
     display: flex; gap: 12px; align-items: flex-start;

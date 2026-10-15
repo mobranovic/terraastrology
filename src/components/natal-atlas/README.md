@@ -1,11 +1,18 @@
-# Natal Atlas – integration slot
+# Natal Atlas on the website
 
-This folder is the reserved place for features brought in from the Natal Atlas app.
+The free forecast on `/free-forecast/` is the prognostic part of
+[Natalni Atlas](https://github.com/mobranovic/natalni-atlas), rebuilt for the public site:
 
-* `NatalAtlasSlot.astro` is already placed on the home page, the consultation page,
-  each Sun-sign essay (compact) and on `/natal-atlas/`.
-* Configuration lives in `src/lib/site.ts` → `NATAL_ATLAS`
-  (`enabled`, `appUrl`, `features`).
-* When a feature is chosen, add its component here (for example `ChartWheel.astro`)
-  and render it inside the `enabled` branch of `NatalAtlasSlot.astro`, switching on
-  the `context` prop (`home`, `consultation`, `sign`, `page`).
+* `src/lib/forecast/engine.ts` – astronomy ported from Natalni Atlas (`localToUT`,
+  `planetsAt`, Placidus `housesFrom`, secondary `progress`, `transitHits`).
+* `src/lib/forecast/forecast.ts` – picks the strongest themes for the next 12 months:
+  the three strongest transits of Jupiter–Pluto to the personal points, Jupiter/Saturn
+  through the houses, the progressed Moon, Rudhyar's progressed lunation phase and
+  the progressed Sun – and composes 5–10 sentences.
+* `src/lib/forecast/texts.ts` – every sentence fragment; edit the wording here.
+* `ForecastTool.astro` – the form and result; `ForecastTeaser.astro` – the invitation
+  used on other pages.
+
+Everything runs in the visitor's browser; birth data is never sent anywhere.
+The place search uses `public/data/cities.json` (GeoNames, CC BY 4.0), rebuilt with
+`npm run build:cities`.

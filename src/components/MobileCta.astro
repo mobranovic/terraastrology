@@ -1,0 +1,34 @@
+---
+// Sticky "Book a reading" bar on phones; hides itself near the page footer.
+const onForecast = Astro.url.pathname.startsWith('/free-forecast');
+---
+<div class:list={['mobile-cta', { single: onForecast }]} id="mobile-cta">
+  {!onForecast && <a class="btn btn-ghost" href="/free-forecast/">Free forecast</a>}
+  <a class="btn btn-primary" href="/book/">Book a reading</a>
+</div>
+<script>
+  const bar = document.getElementById('mobile-cta');
+  const footer = document.querySelector('.site-footer');
+  if (bar && footer && 'IntersectionObserver' in window) {
+    new IntersectionObserver(([e]) => bar.classList.toggle('away', e.isIntersecting)).observe(footer);
+  }
+</script>
+<style>
+  .mobile-cta { display: none; }
+  @media (max-width: 760px) {
+    .mobile-cta {
+      position: fixed; left: 0; right: 0; bottom: 0; z-index: 60;
+      display: grid; grid-template-columns: 1fr 1.4fr; gap: 8px;
+      padding: 10px 16px calc(10px + env(safe-area-inset-bottom));
+      background: color-mix(in srgb, var(--bg) 92%, transparent);
+      backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+      border-top: 1px solid var(--line);
+      transition: transform 0.25s ease;
+    }
+    .mobile-cta.away { transform: translateY(110%); }
+    .mobile-cta.single { grid-template-columns: 1fr; }
+    .btn { justify-content: center; padding: 0.85em 1em; }
+    .btn-ghost { color: var(--accent); }
+    :global(body) { padding-bottom: 72px; }
+  }
+</style>

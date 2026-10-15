@@ -48,4 +48,5 @@ export const SERVICES = [
 ];
 
 export const PLATFORMS = ['Zoom', 'WhatsApp', 'Skype'];
+export const serviceById = (id: string) => SERVICES.find((s) => s.id === id);
 export const PAYMENT = 'All fees are payable via PayPal, Revolut or bank transfer.';

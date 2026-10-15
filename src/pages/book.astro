@@ -1,0 +1,54 @@
+---
+import Page from '../layouts/Page.astro';
+import ConsultationForm from '../components/ConsultationForm.astro';
+import { BOOKING, SITE } from '../lib/site';
+import { PAYMENT } from '../lib/services';
+---
+<Page
+  title="Book a reading"
+  eyebrow="Consultation"
+  lede="Send your birth data and what you would like to explore — I will reply with a proposed time and payment details."
+  description="Book a natal chart, synastry or location astrology consultation with Marko Obranović."
+  hideCta
+>
+  <section class="wrap section book">
+    <aside>
+      <ol class="steps">
+        <li><strong>Send the form</strong><span>Your session, birth data and questions.</span></li>
+        {BOOKING.calUrl ? (
+          <li><strong>Pick a time</strong><span><a href={BOOKING.calUrl}>Choose a free slot in the calendar</a>.</span></li>
+        ) : (
+          <li><strong>Agree a time</strong><span>I reply by e-mail with a proposed time.</span></li>
+        )}
+        <li><strong>Pay & meet</strong><span>{PAYMENT} We meet over Zoom, WhatsApp or Skype.</span></li>
+      </ol>
+      <div class="tip">
+        <p><strong>Birth time</strong> — the more precise, the better. A birth certificate or hospital record is the best source.</p>
+        <p>Questions first? Write to <a id="mail" href="/faq/" data-u={SITE.email.user} data-d={SITE.email.domain}>{SITE.email.user} [at] {SITE.email.domain}</a> or read the <a href="/faq/">FAQ</a>.</p>
+      </div>
+    </aside>
+    <div class="form-card"><ConsultationForm /></div>
+  </section>
+</Page>
+<script>
+  const a = document.getElementById('mail') as HTMLAnchorElement | null;
+  if (a) {
+    const addr = `${a.dataset.u}@${a.dataset.d}`;
+    a.href = `mailto:${addr}`;
+    a.textContent = addr;
+  }
+</script>
+<style>
+  .book { display: grid; grid-template-columns: 1fr 1.7fr; gap: clamp(32px, 5vw, 64px); align-items: start; }
+  aside { position: sticky; top: 100px; display: grid; gap: 28px; }
+  .steps { list-style: none; margin: 0; padding: 0; counter-reset: s; display: grid; gap: 18px; }
+  .steps li { counter-increment: s; display: grid; grid-template-columns: 40px 1fr; column-gap: 12px; }
+  .steps li::before { content: counter(s); grid-row: span 2; width: 34px; height: 34px; border-radius: 50%; display: grid; place-items: center; background: var(--accent-soft); color: var(--accent); font-weight: 600; }
+  .steps strong { font: 500 1.15rem var(--font-display); }
+  .steps span { color: var(--muted); font-size: 0.95rem; }
+  .steps a, .tip a { color: var(--accent); }
+  .tip { padding: 20px 22px; border-radius: var(--radius); background: var(--surface-2); font-size: 0.93rem; color: var(--ink-soft); }
+  .tip p:last-child { margin: 0; }
+  .form-card { background: var(--surface); border: 1px solid var(--line); border-radius: calc(var(--radius) + 4px); padding: clamp(22px, 4vw, 40px); box-shadow: var(--shadow); }
+  @media (max-width: 900px) { .book { grid-template-columns: 1fr; } aside { position: static; } }
+</style>

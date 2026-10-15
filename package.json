@@ -5,10 +5,12 @@
   "private": true,
   "scripts": {
     "dev": "astro dev",
-    "build": "astro build",
+    "build": "node scripts/make-thumbs.mjs && astro build",
     "preview": "astro preview",
     "import:wp": "node scripts/import-wordpress.mjs",
-    "fetch:media": "node scripts/fetch-media.mjs"
+    "fetch:media": "node scripts/fetch-media.mjs",
+    "build:cities": "node scripts/build-cities.mjs",
+    "thumbs": "node scripts/make-thumbs.mjs"
   },
   "dependencies": {
     "@astrojs/markdown-remark": "^7.3.2",
@@ -17,9 +19,12 @@
     "@fontsource-variable/fraunces": "^5.3.0",
     "@fontsource-variable/inter": "^5.3.0",
     "@fontsource-variable/source-serif-4": "^5.3.1",
-    "astro": "^7.3.8"
+    "astro": "^7.3.8",
+    "astronomy-engine": "^2.1.19"
   },
   "devDependencies": {
+    "@photostructure/tz-lookup": "^11.7.0",
+    "all-the-cities": "^3.1.0",
     "fast-xml-parser": "^5.11.2",
     "turndown": "^7.2.4"
   }
