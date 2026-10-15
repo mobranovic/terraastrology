@@ -1,0 +1,30 @@
+---
+title: "Pluto in Capricorn and Global Crisis"
+slug: "pluto-capricorn-global-crisis"
+date: "2013-09-04"
+wpId: 1691
+categories: ["planets","pluto"]
+tags: ["capricorn","global crisis","Pluto"]
+featured: false
+excerpt: "How to understand the global economic crisis or any other crisis that the individual or humankind is facing throughout the existence? One of the most profound ways is to put it in the context of time, with its…"
+image: "/wp-content/uploads/2013/09/Pluto-Capricorn-Global.jpg"
+imageAlt: ""
+---
+
+How to understand the global economic crisis or any other crisis that the individual or humankind is facing throughout the existence? One of the most profound ways is to put it in the context of time, with its origins, causes and consequences.
+
+Pluto, in astrology the planet whereas in the astronomy since 2006 of “lowered status” to dwarf planet, is one of the strongest symbols of global crisis and society transformations. **Since its discovery in 1930 it denoted the last known point in the Solar system, but also the first communication channel with the infinite vastness of the Universe.** The mere path of its motion significantly stands out from other planets that are close to us. Unlike Venus, Earth, Saturn…that rotate around the sun on more or less flat surface, Pluto has an inclination of 17 degrees and elongated elliptical path and within one rotation around the Sun that takes **248 years**, it comes to the position closer to the Sun than Neptune. The last time this event lasted from **February 1979 to February 1999,** whereas before that between July 1735 and September 1749.
+
+It rotates a bit strange, under ecliptic, it slightly ascends high above it, most of the time it’s on the edge of the system and then it gets closer to Neptune and “breaks” the invisible limit…as if it communicates with us. That’s the key of its significance; **Pluto is the Seed, seed out of which the new life, new society and new order is born.** But for something new to “be born” something old must “die”. From distant vastness of the universe it brings the message of new life into our system and during its path within Neptune’s axis it puts the seed in the uterus symbolized by Neptune whereas on the fertile Earth with the energy of the Sun the new life is born.
+
+**At the beginning of 2008 Pluto entered Capricorn** where it will stay till the final entrance in Aquarius at the beginning of 2024. Its **entrance in Capricorn coincides with the start of global economic crisis** and it’s not realistic to expect that the situation will calm down during all 16 years during its stay in this sign. Capricorn symbolizes the maximum of society organization, but also the moment when the individual starts to feel the whole burden of this rigid organization. Nowadays the world functions on the basis of bank-financial-commercial rules, but Pluto symbolically announces its ending. **Economic system, complicated up to the level of incomprehensibility for the most of the people, irretrievably dies** for the purpose of creating the new array, but not before some form of the revolution occurs when Pluto is in Aquarius and there will be the consequent chaos during the period of Pluto in Pisces.
+
+Similar situation developed by the end of 18th century during the last stay of Pluto in Capricorn. The collapse of feudal and colonial system, the base of the organization of that time, started in 1763 in North America when the British authorities imposed many new taxes to cover the expenses of warfare and to keep colonies under their control (violent keeping of the old form of the organization). There’s a very similar situation nowadays with banks that impose new taxes, market regulations, credit rates…in order to keep the irretrievably dying system.
+
+In astrology there’s one interesting area of planetary nodes. Those are points in the sky where the path of a certain planet is cutting the ecliptic. Moon nodes are the most popular of these symbols, points where the Moon path cuts the Earth path around the Sun during its “descending” and “ascending” above the ecliptic. Other planets behave in a similar way and it’s interesting that Pluto’s South node is on Capricorn’s 20 degrees. The South node is the point of releasing, critical area from which it’s necessary to part so that the evolution could continue. Otherwise, “death” is inevitable.
+
+**In the last transit of Pluto over the South node in 1772 the base of the independent USA** was set by the foundation of “Committees of Correspondence” – the origin of the Congress, young nation set its base with the “liberation” from the governance of the colonial Britain. The process ended in 1776 with the Declaration of the independence and the ideas that originated from these new changes were just an introduction to the French revolution during Pluto’s stay in Aquarius that irretrievably changed the feudal organization of both Europe and world and led to creation of liberal democracy and secularism.
+
+**Today Pluto is merely at the beginning of its transit through Capricorn and it only started to corrode one big and unfair system** that broke due to overpriced values of real-estates and slaver’s loans. Changes start again from USA, taxes caused by warfare and attempts to maintain what should be changed serve as the sparkle of global transformation. Dynamic square with Uranus in Aries will add to everything a touch of extreme unpredictability up to the mid 2015, **and only the conjunction of Pluto and its South node in 2018 will give some guidelines. Or will indicate which guidelines to renounce.**
+
+Some of us born during Pluto’s stay within Neptune’s path between 1979 and 1999 will develop the inner feeling of global changes and will be directly present in the moments of creation of the new world order. But never as individuals, **because Pluto is the seed and the nature doesn’t leave such an important matter as the evolution and the creation of progeny to a certain individual or group.** Symbolic tree gives a great amount of seeds with the hope that at least some of them will survive and give new life.

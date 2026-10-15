@@ -1,0 +1,15 @@
+# Old WordPress URLs → new site (Netlify syntax)
+/edge-of-science/        /location-astrology/   301
+/edge-of-science         /location-astrology/   301
+/feed/                   /rss.xml               301
+/feed                    /rss.xml               301
+/comments/feed/          /rss.xml               301
+/tag/*                   /articles/             301
+/category/uncategorized/ /articles/             301
+/category/slider/        /articles/             301
+/author/*                /about-me/             301
+/blog/                   /articles/             301
+/wp-admin/*              /                      301
+/wp-login.php            /                      301
+/page/*                  /articles/             301
+/:year/:month/:day/:slug/ /:slug/               301

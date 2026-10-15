@@ -1,0 +1,175 @@
+---
+import { getCollection, render } from 'astro:content';
+import Base from '../layouts/Base.astro';
+import Page from '../layouts/Page.astro';
+import Starfield from '../components/Starfield.astro';
+import PostCard from '../components/PostCard.astro';
+import NatalAtlasSlot from '../components/natal-atlas/NatalAtlasSlot.astro';
+import { getPosts, postUrl, type Post } from '../lib/posts';
+import { mediaUrl } from '../lib/media.mjs';
+import { categoryName, formatDate, readingTime } from '../lib/site';
+import { SERIES, SIGNS, glyph } from '../lib/zodiac';
+
+export async function getStaticPaths() {
+  // Pages that have their own hand-built route in src/pages/.
+  const CUSTOM_PAGES = new Set([
+    'about-me', 'sun-signs', 'astrological-consultation', 'edge-of-science',
+    'mundane-astrology', 'love-astrology', '12-myths-zodiac',
+  ]);
+  const posts = await getPosts();
+  const pages = (await getCollection('pages')).filter((p) => !CUSTOM_PAGES.has(p.data.slug));
+  return [
+    ...posts.map((entry) => ({ params: { slug: entry.data.slug }, props: { kind: 'post' as const, entry, posts } })),
+    ...pages.map((entry) => ({ params: { slug: entry.data.slug }, props: { kind: 'page' as const, entry, posts } })),
+  ];
+}
+
+const { kind, entry, posts } = Astro.props;
+const { Content } = await render(entry);
+
+let prev: Post | undefined, next: Post | undefined, related: Post[] = [];
+let sign: (typeof SIGNS)[number] | undefined;
+let seriesName = '';
+if (kind === 'post') {
+  const post = entry as Post;
+  const bySlug = new Map(posts.map((p) => [p.data.slug, p]));
+  for (const [name, list] of Object.entries(SERIES)) {
+    const i = list.indexOf(post.data.slug);
+    if (i >= 0) {
+      seriesName = name === 'signs' ? '12 Signs of the Zodiac' : '12 Myths of the Zodiac';
+      prev = bySlug.get(list[i - 1]);
+      next = bySlug.get(list[i + 1]);
+      break;
+    }
+  }
+  sign = SIGNS.find((s) => s.post === post.data.slug || s.myth === post.data.slug);
+  related = posts
+    .filter((p) => p !== post && p !== prev && p !== next)
+    .map((p) => ({ p, score: p.data.categories.filter((c) => post.data.categories.includes(c)).length }))
+    .filter((x) => x.score > 0)
+    .sort((a, b) => b.score - a.score || b.p.data.date.valueOf() - a.p.data.date.valueOf())
+    .slice(0, 3)
+    .map((x) => x.p);
+}
+const minutes = readingTime(entry.body ?? '');
+const d = entry.data as Post['data'];
+---
+{kind === 'page' ? (
+  <Page title={entry.data.title} eyebrow="Terra Astrology" description={entry.data.excerpt}>
+    <div class="wrap article-body"><div class="prose"><Content /></div></div>
+  </Page>
+) : (
+  <Base title={d.title} description={d.excerpt} image={d.image ? mediaUrl(d.image) : undefined} type="article">
+    <article>
+      <header class="post-hero">
+        <Starfield count={70} seed={d.title.length} />
+        <div class="wrap">
+          <nav class="crumbs" aria-label="Breadcrumb">
+            <a href="/articles/">Articles</a>
+            {d.categories[0] && <><span aria-hidden="true">/</span><a href={`/category/${d.categories[0]}/`}>{categoryName(d.categories[0])}</a></>}
+          </nav>
+          {sign && <p class="sign-glyph glyph" aria-hidden="true">{glyph(sign.glyph)}</p>}
+          <h1>{d.title}</h1>
+          <p class="meta">
+            <time datetime={d.date.toISOString()}>{formatDate(d.date)}</time>
+            <span aria-hidden="true">·</span>
+            {minutes} min read
+          </p>
+        </div>
+      </header>
+
+      <div class="wrap article-body">
+        {d.image && (
+          <figure class="cover">
+            <img src={mediaUrl(d.image)} alt={d.imageAlt} decoding="async" />
+          </figure>
+        )}
+        <div class="prose"><Content /></div>
+
+        {(d.categories.length > 0 || d.tags.length > 0) && (
+          <ul class="chips topics">
+            {d.categories.map((c) => <li><a class="chip" href={`/category/${c}/`}>{categoryName(c)}</a></li>)}
+          </ul>
+        )}
+
+        {sign && (
+          <aside class="sign-links">
+            <p class="eyebrow">{sign.name} · {sign.dates} · {sign.element}</p>
+            <div>
+              {sign.post !== d.slug && <a class="btn btn-ghost" href={`/${sign.post}/`}>Read: {sign.name}</a>}
+              {sign.myth && sign.myth !== d.slug && <a class="btn btn-ghost" href={`/${sign.myth}/`}>Read: Mythology of {sign.name}</a>}
+              <a class="btn btn-primary" href="/astrological-consultation/#order">Order your natal chart</a>
+            </div>
+          </aside>
+        )}
+
+        {(prev || next) && (
+          <nav class="series" aria-label={seriesName}>
+            <p class="eyebrow">{seriesName}</p>
+            <div class="series-links">
+              {prev ? <a href={postUrl(prev)} class="prev"><small>← Previous</small>{prev.data.title}</a> : <span />}
+              {next && <a href={postUrl(next)} class="next"><small>Next →</small>{next.data.title}</a>}
+            </div>
+          </nav>
+        )}
+
+        {sign && <div class="atlas"><NatalAtlasSlot context="sign" compact /></div>}
+      </div>
+    </article>
+
+    {related.length > 0 && (
+      <section class="section related">
+        <div class="wrap">
+          <div class="section-head"><h2>Keep reading</h2></div>
+          <div class="grid">{related.map((p) => <PostCard post={p} />)}</div>
+        </div>
+      </section>
+    )}
+  </Base>
+)}
+
+<style>
+  .post-hero {
+    position: relative;
+    overflow: hidden;
+    background: radial-gradient(120% 140% at 85% 0%, var(--night-2) 0%, var(--night) 60%);
+    color: var(--night-ink);
+    padding: clamp(48px, 8vw, 96px) 0 clamp(96px, 12vw, 150px);
+    text-align: center;
+  }
+  .post-hero .wrap { position: relative; max-width: 900px; }
+  .crumbs { display: flex; justify-content: center; gap: 10px; font-size: 0.85rem; margin-bottom: 24px; color: var(--night-muted); }
+  .crumbs a { color: var(--night-gold); text-decoration: none; }
+  .crumbs a:hover { text-decoration: underline; }
+  .sign-glyph { font-size: 3rem; color: var(--night-gold); margin: 0 0 8px; line-height: 1; }
+  h1 { font-size: clamp(2.2rem, 5.5vw, 4rem); font-weight: 400; letter-spacing: -0.025em; margin-bottom: 0.4em; }
+  .meta { color: var(--night-muted); font-size: 0.9rem; display: flex; justify-content: center; gap: 10px; margin: 0; }
+
+  .article-body { max-width: calc(var(--measure) + 32px); padding: clamp(40px, 6vw, 64px) 0 clamp(48px, 8vw, 96px); }
+  .post-hero + .article-body { padding-top: 0; }
+  .cover { margin: calc(-1 * clamp(64px, 9vw, 110px)) 0 48px; position: relative; }
+  .cover img { width: 100%; max-height: 520px; object-fit: cover; border-radius: var(--radius); box-shadow: var(--shadow); background: var(--surface); }
+  .post-hero + .article-body:not(:has(.cover)) { padding-top: clamp(40px, 6vw, 64px); }
+  .post-hero:has(+ .article-body:not(:has(.cover))) { padding-bottom: clamp(48px, 7vw, 80px); }
+
+  .topics { margin: 40px 0 0; }
+  .sign-links { margin-top: 48px; padding: 28px; border: 1px solid var(--line); border-radius: var(--radius); background: var(--surface); }
+  .sign-links div { display: flex; flex-wrap: wrap; gap: 10px; }
+  .sign-links .btn-ghost { color: var(--ink); border-color: var(--line); }
+  .series { margin-top: 48px; }
+  .series-links { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .series-links a {
+    display: block; padding: 18px 20px; border: 1px solid var(--line); border-radius: 12px;
+    text-decoration: none; font: 500 1.1rem/1.3 var(--font-display); background: var(--surface);
+    transition: border-color 0.2s;
+  }
+  .series-links a:hover { border-color: var(--accent); }
+  .series-links small { display: block; font: 600 0.75rem var(--font-ui); color: var(--accent); margin-bottom: 6px; letter-spacing: 0.06em; text-transform: uppercase; }
+  .next { text-align: right; grid-column: 2; }
+  .atlas { margin-top: 48px; }
+  .related { background: var(--surface-2); }
+  @media (max-width: 560px) {
+    .series-links { grid-template-columns: 1fr; }
+    .next { grid-column: auto; }
+  }
+</style>

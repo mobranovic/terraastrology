@@ -1,0 +1,24 @@
+---
+title: "Neptune in Pisces"
+slug: "neptune-in-pisces"
+date: "2012-03-15"
+wpId: 891
+categories: ["neptune","planets"]
+tags: ["Neptune","pisces","sun sign"]
+featured: false
+excerpt: "Neptune came home on Friday, 3rd of February 2012 , after nightfall, he dived and passed invisible border into the world of Pisces. He is back in his world after long 150 years and final entry into Aries in February…"
+image: "/wp-content/uploads/2012/12/Saturn-Scorpio.jpg"
+imageAlt: ""
+---
+
+**Neptune came home on Friday, 3rd of February 2012**, after nightfall, he dived and passed invisible border into the world of Pisces. He is back in his world after long 150 years and final entry into Aries in February 1862 and short visit in Pisces in 2011 ([Neptune in Pisces 2011](/?p=896)). This is his definitive entry into this sign where it will remain for almost 14 years and winter 2026.
+
+**Entrance in Pisces is not the beginning; it's a great and symbolic end** of the time in which we live in. Combined with the devastating impact of Pluto in Capricorn, which today breaks the skeleton of the financial world and Uranus in Aries which releases leaders of a new era out of the chaotic mass joins the melting influence of Neptune with the last sign of the Zodiac and end all of what we now believe. As much as astrologers consider that Neptune feels at home in Pisces ht is there primarily to finish with illusions and dreams of one world in last decades, more than 2000 years long age of Pisces. Because, to start something new, it is necessary that something old dies or is dissolved in the Neptune’s ocean.
+
+**We can expect a flood of visionaries and catastrophist** who will use the confused emotions of the masses to announce arrival of apocalypse, offering salvation and redemption of sins. Deformed conservatives will resist eroding Neptune acid and with the last atoms of strength will try to evoke primitive tribal instincts of racism and nationalism as the last line of defense. **The growing gap between material side of life and obsolete religious community will leave space for coming of all the "New Age Churches".** Recently founded and of since few months ago officially recognized religion in Sweden - Kopimism is just the first step on the way. **Ideals are now on so low levels** in the world that young people who participate in mass demonstrations do not have a clear vision against what the revolt is and for what are they shouting for so they use Neptune’s chaos on the streets for the robbery of broken shop-windows.
+
+Neptune is one of the great heavenly messengers, with Uranus and Pluto, and their movements reflect and suggest major changes in the collective consciousness. **Only the rare individuals whose role goes beyond the personal and family will have direct contact with his energy**, and among them there will be a danger to identify themselves with the Divine, so often the case with the regular tragic ending.
+
+This is the beginning of the end of today's civilization. The boundaries will increasingly lose its meaning; the various races will increasingly lose their distinctive characteristics and will slowly merge into a new society that will in some new way and with some new ideals wait for a big shift in the Age of Aquarius in the second half of the 21stcentury. Such a transition is a long one and not without resistance so **one of the main tasks of Neptune in Pisces is "softening" rigid beliefs or institutions.** To an average conservative it would seem that the whole world is collapsing and political leaders without vision will seek solutions in solid foundations of the past, but this will only delay the inevitable. Neptune in Pisces liberate us of false beliefs in scientific institutions as rescuers of weary progress, forcing us to break free from shackles of false religiosity, breaks the illusion of our corporations as places of financial salvation and job security ... All of this will be a seemingly chaotic but a necessary process of potential new global community.
+
+Finally, one interesting thing, **during the last residence of Neptune in Pisces (1847-1862) started early development of the petroleum industry**; 1850’s development of production of kerosene from crude oil, 1853 the first commercial oil well ... As much as these procedures influenced the technological development, today they are symbol of bloody wars, treacherous game with prices and global pollution. **The next 14 years its use comes in the final stage** and that fact will cause the need among those who use it to dictate the fate of others to combat the changes by all means available. Although, few really understand the symbolic significance of oil out of its economic context ... deep below ground, black gold formed by carbonization of microorganisms in the distant past that runs our cars and planes on the way to a new world.

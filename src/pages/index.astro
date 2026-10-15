@@ -1,0 +1,266 @@
+---
+import Base from '../layouts/Base.astro';
+import Starfield from '../components/Starfield.astro';
+import ZodiacWheel from '../components/ZodiacWheel.astro';
+import PostCard from '../components/PostCard.astro';
+import NatalAtlasSlot from '../components/natal-atlas/NatalAtlasSlot.astro';
+import { getPosts, postsInCategory } from '../lib/posts';
+import { SIGNS, glyph } from '../lib/zodiac';
+import { SERVICES } from '../lib/services';
+
+const posts = await getPosts();
+const featured = posts.filter((p) => p.data.featured).slice(0, 3);
+const latest = posts.filter((p) => !featured.includes(p)).slice(0, 6);
+const myths = await postsInCategory('12-myths-of-the-zodiac');
+const planets = await postsInCategory('planets');
+const mundane = await postsInCategory('mundane-astrology');
+const love = await postsInCategory('love-astrology');
+
+const themes = [
+  { href: '/sun-signs/', title: 'Sun Signs', text: 'The twelve signs as phases of the solar year — not boxes, but stages of growth.', count: 12 },
+  { href: '/12-myths-zodiac/', title: 'Myths of the Zodiac', text: 'The stories the ancients wrote into the constellations, and what they still say.', count: myths.length },
+  { href: '/category/planets/', title: 'Planets & Cycles', text: 'Saturn, Neptune, Pluto and the long rhythms that shape eras and lives.', count: planets.length },
+  { href: '/mundane-astrology/', title: 'Mundane Astrology', text: 'Crises, economies and turning points of history read through the sky.', count: mundane.length },
+  { href: '/love-astrology/', title: 'Love Astrology', text: 'Relationships, synastry and the illusions we project onto each other.', count: love.length },
+  { href: '/location-astrology/', title: 'Location Astrology', text: 'How places on the map resonate with your birth chart.', count: null },
+];
+---
+<Base>
+  <section class="hero">
+    <Starfield count={120} />
+    <div class="wrap hero-grid">
+      <div class="copy">
+        <p class="eyebrow">Terra Astrology</p>
+        <h1>Astrology from a <em>different</em> perspective</h1>
+        <p class="lede">
+          Essays on the signs, their myths and the great planetary cycles — written for those who want to
+          understand the language of the sky, not just read their horoscope.
+        </p>
+        <div class="actions">
+          <a class="btn btn-light" href="/sun-signs/">Start with the signs</a>
+          <a class="btn btn-ghost" href="/astrological-consultation/">Book a consultation</a>
+        </div>
+      </div>
+      <div class="wheel-wrap">
+        <ZodiacWheel />
+      </div>
+    </div>
+  </section>
+
+  {featured.length > 0 && (
+    <section class="section wrap">
+      <div class="section-head">
+        <div>
+          <p class="eyebrow">Featured</p>
+          <h2>Essays worth starting with</h2>
+        </div>
+        <a class="link-arrow" href="/articles/">All {posts.length} articles →</a>
+      </div>
+      <div class="featured">
+        {featured.map((p, i) => <PostCard post={p} large={i === 0} />)}
+      </div>
+    </section>
+  )}
+
+  <section class="section themes-band">
+    <div class="wrap">
+      <div class="section-head">
+        <div>
+          <p class="eyebrow">Explore</p>
+          <h2>Six ways into the sky</h2>
+        </div>
+      </div>
+      <ul class="themes">
+        {themes.map((t, i) => (
+          <li>
+            <a href={t.href}>
+              <span class="num">{String(i + 1).padStart(2, '0')}</span>
+              <h3>{t.title}</h3>
+              <p>{t.text}</p>
+              {t.count ? <span class="count">{t.count} essays</span> : <span class="count">Read more</span>}
+            </a>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <section class="section wrap">
+    <div class="section-head">
+      <div>
+        <p class="eyebrow">The twelve signs</p>
+        <h2>Find your sign</h2>
+        <p>Each sign is a chapter in one continuous story of the solar year.</p>
+      </div>
+      <a class="link-arrow" href="/sun-signs/">About the signs →</a>
+    </div>
+    <ul class="signs">
+      {SIGNS.map((s) => (
+        <li>
+          <a href={`/${s.post}/`}>
+            <span class="glyph">{glyph(s.glyph)}</span>
+            <strong>{s.name}</strong>
+            <small>{s.dates}</small>
+          </a>
+        </li>
+      ))}
+    </ul>
+  </section>
+
+  <section class="section wrap latest">
+    <div class="section-head">
+      <div>
+        <p class="eyebrow">From the archive</p>
+        <h2>Recent essays</h2>
+      </div>
+      <a class="link-arrow" href="/articles/">Browse all →</a>
+    </div>
+    <div class="grid">{latest.map((p) => <PostCard post={p} />)}</div>
+  </section>
+
+  <section class="section wrap consult">
+    <div class="consult-copy">
+      <p class="eyebrow">Consultations</p>
+      <h2>A personal reading of your natal chart</h2>
+      <p>
+        Live sessions over Zoom, WhatsApp or Skype — from a focused 30-minute overview to an extended
+        analysis with synastry and location astrology.
+      </p>
+      <a class="btn btn-primary" href="/astrological-consultation/#order">Order a natal chart reading</a>
+    </div>
+    <ul class="prices">
+      {SERVICES.map((s) => (
+        <li>
+          <a href={`/astrological-consultation/?service=${s.id}#order`}>
+            <span>{s.name}<small>{s.duration}</small></span>
+            <strong>€{s.price}</strong>
+          </a>
+        </li>
+      ))}
+    </ul>
+  </section>
+
+  <section class="wrap atlas-band">
+    <NatalAtlasSlot context="home" />
+  </section>
+</Base>
+
+<style>
+  .hero {
+    position: relative;
+    overflow: hidden;
+    background:
+      radial-gradient(60% 80% at 75% 40%, rgb(217 184 92 / 0.14), transparent 70%),
+      radial-gradient(140% 140% at 80% 0%, var(--night-2), var(--night) 65%);
+    color: var(--night-ink);
+    padding: clamp(56px, 9vw, 120px) 0;
+  }
+  .hero-grid {
+    position: relative;
+    display: grid;
+    grid-template-columns: 1.15fr 1fr;
+    align-items: center;
+    gap: clamp(32px, 6vw, 80px);
+  }
+  .hero .eyebrow { color: var(--night-gold); }
+  h1 {
+    font-size: clamp(2.6rem, 6.4vw, 5.2rem);
+    font-weight: 400;
+    letter-spacing: -0.03em;
+    margin-bottom: 0.35em;
+  }
+  h1 em { color: var(--night-gold); font-style: italic; }
+  .lede {
+    font-family: var(--font-text);
+    font-size: clamp(1.1rem, 1.6vw, 1.3rem);
+    color: var(--night-muted);
+    max-width: 50ch;
+  }
+  .actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 32px; }
+  .hero .btn-ghost { color: var(--night-ink); }
+  .wheel-wrap { max-width: 480px; width: 100%; justify-self: center; }
+
+  .featured {
+    display: grid;
+    grid-template-columns: 1.6fr 1fr;
+    grid-template-rows: auto auto;
+    gap: 24px;
+  }
+  .featured > :global(:first-child) { grid-row: span 2; }
+
+  .themes-band { background: var(--surface-2); }
+  .themes {
+    list-style: none; margin: 0; padding: 0;
+    display: grid; gap: 1px;
+    grid-template-columns: repeat(3, 1fr);
+    background: var(--line);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    overflow: hidden;
+  }
+  .themes a {
+    display: flex; flex-direction: column; height: 100%;
+    padding: 28px 28px 24px;
+    background: var(--surface);
+    text-decoration: none;
+    transition: background 0.2s;
+  }
+  .themes a:hover { background: var(--bg); }
+  .themes a:hover h3 { color: var(--accent); }
+  .num { font: 500 0.85rem var(--font-ui); color: var(--gold); margin-bottom: 18px; }
+  .themes h3 { font-size: 1.5rem; transition: color 0.2s; }
+  .themes p { color: var(--muted); font-family: var(--font-text); }
+  .count { margin-top: auto; font-size: 0.82rem; font-weight: 600; color: var(--accent); }
+
+  .signs {
+    list-style: none; margin: 0; padding: 0;
+    display: grid; gap: 12px;
+    grid-template-columns: repeat(6, 1fr);
+  }
+  .signs a {
+    display: grid; justify-items: center; gap: 4px;
+    padding: 22px 8px 18px;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    background: var(--surface);
+    text-decoration: none;
+    text-align: center;
+    transition: border-color 0.2s, transform 0.2s;
+  }
+  .signs a:hover { border-color: var(--accent); transform: translateY(-2px); }
+  .signs .glyph { font-size: 2rem; line-height: 1.2; color: var(--accent); }
+  .signs strong { font: 500 1.1rem var(--font-display); }
+  .signs small { font-size: 0.75rem; color: var(--muted); }
+
+  .consult {
+    display: grid; grid-template-columns: 1fr 1fr; gap: clamp(32px, 6vw, 72px); align-items: center;
+    border-top: 1px solid var(--line);
+  }
+  .consult h2 { font-size: clamp(1.9rem, 3.6vw, 2.8rem); }
+  .consult-copy p:not(.eyebrow) { color: var(--muted); font-family: var(--font-text); font-size: 1.1rem; }
+  .prices { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+  .prices a {
+    display: flex; justify-content: space-between; align-items: center; gap: 16px;
+    padding: 18px 22px; border-radius: 12px; border: 1px solid var(--line); background: var(--surface);
+    text-decoration: none; transition: border-color 0.2s;
+  }
+  .prices a:hover { border-color: var(--accent); }
+  .prices span { font-weight: 600; }
+  .prices small { display: block; font-weight: 400; color: var(--muted); font-size: 0.85rem; }
+  .prices strong { font: 500 1.6rem var(--font-display); color: var(--accent); }
+  .atlas-band { padding-bottom: clamp(56px, 8vw, 104px); }
+
+  @media (max-width: 960px) {
+    .hero-grid { grid-template-columns: 1fr; }
+    .wheel-wrap { max-width: 360px; }
+    .featured { grid-template-columns: 1fr; }
+    .featured > :global(:first-child) { grid-row: auto; }
+    .themes { grid-template-columns: 1fr 1fr; }
+    .signs { grid-template-columns: repeat(4, 1fr); }
+    .consult { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 600px) {
+    .themes { grid-template-columns: 1fr; }
+    .signs { grid-template-columns: repeat(3, 1fr); }
+  }
+</style>

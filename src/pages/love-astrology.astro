@@ -1,0 +1,6 @@
+---
+import TopicHub from '../components/TopicHub.astro';
+import { postsInCategory } from '../lib/posts';
+const posts = await postsInCategory('love-astrology');
+---
+<TopicHub title="Love astrology" eyebrow="Topic" lede="Relationships, attraction and synastry — what the chart can and cannot say about love." posts={posts} />

@@ -1,0 +1,15 @@
+---
+import { getEntry, render } from 'astro:content';
+import Page from '../layouts/Page.astro';
+const page = (await getEntry('pages', 'edge-of-science'))!;
+const { Content } = await render(page);
+---
+<Page title="Location astrology" eyebrow="Astrocartography" lede="How different places on the map resonate with your birth chart." description={page.data.excerpt}>
+  <div class="wrap section">
+    <div class="prose"><Content /></div>
+    <p class="cta"><a class="btn btn-primary" href="/astrological-consultation/?service=extended#order">Order an extended analysis</a></p>
+  </div>
+</Page>
+<style>
+  .cta { margin-top: 32px; }
+</style>

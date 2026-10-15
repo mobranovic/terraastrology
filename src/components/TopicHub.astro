@@ -1,0 +1,17 @@
+---
+import Page from '../layouts/Page.astro';
+import PostCard from './PostCard.astro';
+import type { Post } from '../lib/posts';
+interface Props { title: string; eyebrow?: string; lede?: string; posts: Post[]; heading?: string }
+const { title, eyebrow = 'Topic', lede, posts, heading } = Astro.props;
+---
+<Page title={title} eyebrow={eyebrow} lede={lede}>
+  <div class="wrap section">
+    {Astro.slots.has('default') && <div class="intro prose"><slot /></div>}
+    {heading && <div class="section-head"><h2>{heading}</h2></div>}
+    <div class="grid">{posts.map((p) => <PostCard post={p} />)}</div>
+  </div>
+</Page>
+<style>
+  .intro { margin-bottom: 56px; }
+</style>

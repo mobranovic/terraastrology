@@ -1,0 +1,29 @@
+---
+import Page from '../../layouts/Page.astro';
+import PostCard from '../../components/PostCard.astro';
+import { getPosts, usedCategories } from '../../lib/posts';
+import { categoryName } from '../../lib/site';
+const posts = await getPosts();
+const cats = await usedCategories();
+const years = [...new Set(posts.map((p) => p.data.date.getFullYear()))];
+---
+<Page title="Articles" eyebrow="The archive" lede={`${posts.length} essays on signs, myths, planets and the times we live in — written since 2012.`}>
+  <div class="wrap section">
+    <ul class="chips filters" aria-label="Topics">
+      <li><a class="chip" href="/articles/" aria-current="page">All</a></li>
+      {cats.map(([c, n]) => <li><a class="chip" href={`/category/${c}/`}>{categoryName(c)} <span>{n}</span></a></li>)}
+    </ul>
+    {years.map((y) => (
+      <section class="year">
+        <h2>{y}</h2>
+        <div class="grid">{posts.filter((p) => p.data.date.getFullYear() === y).map((p) => <PostCard post={p} />)}</div>
+      </section>
+    ))}
+  </div>
+</Page>
+<style>
+  .filters { margin-bottom: 48px; }
+  .filters span { color: var(--muted); margin-left: 4px; }
+  .year { margin-bottom: 56px; }
+  .year h2 { font-size: 1.1rem; font-family: var(--font-ui); font-weight: 600; color: var(--muted); border-bottom: 1px solid var(--line); padding-bottom: 12px; margin-bottom: 24px; }
+</style>

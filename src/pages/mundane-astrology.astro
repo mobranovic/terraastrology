@@ -1,0 +1,6 @@
+---
+import TopicHub from '../components/TopicHub.astro';
+import { postsInCategory } from '../lib/posts';
+const posts = await postsInCategory('mundane-astrology');
+---
+<TopicHub title="Mundane astrology" eyebrow="Topic" lede="Economies, crises and turning points of history read through the great planetary cycles." posts={posts} />

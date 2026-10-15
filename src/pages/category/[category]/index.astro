@@ -1,0 +1,16 @@
+---
+import TopicHub from '../../../components/TopicHub.astro';
+import { getPosts, usedCategories } from '../../../lib/posts';
+import { categoryName } from '../../../lib/site';
+
+export async function getStaticPaths() {
+  const posts = await getPosts();
+  return (await usedCategories()).map(([category]) => ({
+    params: { category },
+    props: { posts: posts.filter((p) => p.data.categories.includes(category)) },
+  }));
+}
+const { category } = Astro.params;
+const { posts } = Astro.props;
+---
+<TopicHub title={categoryName(category)} eyebrow="Category" lede={`${posts.length} ${posts.length === 1 ? 'essay' : 'essays'}`} posts={posts} />

@@ -1,0 +1,7 @@
+node_modules/
+dist/
+.astro/
+.netlify/
+.DS_Store
+# The raw WordPress export contains emails and site internals – keep it local.
+.wp-export/

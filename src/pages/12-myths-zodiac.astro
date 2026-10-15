@@ -1,0 +1,8 @@
+---
+import TopicHub from '../components/TopicHub.astro';
+import { getPosts } from '../lib/posts';
+import { SERIES } from '../lib/zodiac';
+const all = await getPosts();
+const posts = SERIES.myths.map((s) => all.find((p) => p.data.slug === s)).filter((p) => p !== undefined);
+---
+<TopicHub title="12 Myths of the Zodiac" eyebrow="Series" lede="The stories the ancients placed among the stars, sign by sign." posts={posts} />

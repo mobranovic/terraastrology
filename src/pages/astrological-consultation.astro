@@ -1,0 +1,78 @@
+---
+import { getEntry, render } from 'astro:content';
+import Page from '../layouts/Page.astro';
+import ConsultationForm from '../components/ConsultationForm.astro';
+import NatalAtlasSlot from '../components/natal-atlas/NatalAtlasSlot.astro';
+import { SERVICES, PAYMENT } from '../lib/services';
+import { SITE } from '../lib/site';
+const page = (await getEntry('pages', 'astrological-consultation'))!;
+// The intro is the first paragraph of the original page; packages come from lib/services.ts.
+const intro = (page.body ?? '').split('\n\n')[0];
+---
+<Page title="Astrological Consultation" eyebrow="Natal chart readings" lede="Live, personal sessions over Zoom, WhatsApp or Skype." description="Natal chart analysis, synastry and location astrology consultations with Marko Obranović.">
+  <div class="wrap section">
+    <p class="intro">{intro}</p>
+
+    <ul class="packages">
+      {SERVICES.map((s, i) => (
+        <li class:list={['pkg', { popular: i === 1 }]}>
+          {i === 1 && <span class="badge">Most chosen</span>}
+          <h2>{s.name}</h2>
+          <p class="price"><strong>€{s.price}</strong> <span>/ {s.duration}</span></p>
+          <ul>{s.items.map((it) => <li>{it}</li>)}</ul>
+          <a class="btn btn-ghost" href={`?service=${s.id}#order`}>Choose</a>
+        </li>
+      ))}
+    </ul>
+    <p class="pay">{PAYMENT}</p>
+  </div>
+
+  <section id="order" class="order-band">
+    <div class="wrap order-grid">
+      <div class="order-copy">
+        <p class="eyebrow">Order</p>
+        <h2>Order your natal chart reading</h2>
+        <p>Send your birth data and what you would like to explore. I will reply with a proposed time for the session and payment details.</p>
+        <p>The more precise the time of birth, the more precise the reading — a birth certificate is the best source.</p>
+        <p class="mail">Prefer e-mail? Write to <a id="mail" href="#order" data-u={SITE.email.user} data-d={SITE.email.domain}>{SITE.email.user} [at] {SITE.email.domain}</a></p>
+      </div>
+      <div class="form-card"><ConsultationForm /></div>
+    </div>
+  </section>
+
+  <div class="wrap section"><NatalAtlasSlot context="consultation" /></div>
+</Page>
+<script>
+  const a = document.getElementById('mail') as HTMLAnchorElement | null;
+  if (a) {
+    const addr = `${a.dataset.u}@${a.dataset.d}`;
+    a.href = `mailto:${addr}`;
+    a.textContent = addr;
+  }
+</script>
+<style>
+  .intro { font-family: var(--font-text); font-size: 1.2rem; color: var(--ink-soft); max-width: 64ch; margin-bottom: 48px; }
+  .packages { list-style: none; margin: 0; padding: 0; display: grid; gap: 20px; grid-template-columns: repeat(auto-fit, minmax(min(100%, 250px), 1fr)); }
+  .pkg {
+    position: relative; display: flex; flex-direction: column;
+    padding: 28px 24px 24px; border: 1px solid var(--line); border-radius: var(--radius); background: var(--surface);
+  }
+  .popular { border-color: var(--accent); box-shadow: var(--shadow); }
+  .badge { position: absolute; top: -12px; left: 24px; background: var(--accent); color: #fff; font: 600 0.72rem/1 var(--font-ui); padding: 6px 10px; border-radius: 999px; letter-spacing: 0.04em; }
+  .pkg h2 { font-size: 1.3rem; }
+  .price strong { font: 500 2.4rem/1 var(--font-display); color: var(--accent); }
+  .price span { color: var(--muted); font-size: 0.9rem; }
+  .pkg ul { padding-left: 1.1em; margin: 0 0 24px; color: var(--ink-soft); font-size: 0.93rem; }
+  .pkg li { margin-bottom: 6px; }
+  .pkg li::marker { color: var(--gold); content: '✦  '; }
+  .pkg .btn { margin-top: auto; justify-content: center; color: var(--accent); }
+  .pay { margin-top: 24px; color: var(--muted); font-size: 0.92rem; }
+  .order-band { background: var(--surface-2); padding-block: clamp(56px, 8vw, 104px); scroll-margin-top: 70px; }
+  .order-grid { display: grid; grid-template-columns: 1fr 1.6fr; gap: clamp(32px, 6vw, 72px); align-items: start; }
+  .order-copy { position: sticky; top: 100px; }
+  .order-copy h2 { font-size: clamp(1.8rem, 3.4vw, 2.6rem); }
+  .order-copy p:not(.eyebrow) { color: var(--muted); font-family: var(--font-text); font-size: 1.05rem; }
+  .mail a { color: var(--accent); }
+  .form-card { background: var(--bg); border: 1px solid var(--line); border-radius: calc(var(--radius) + 4px); padding: clamp(22px, 4vw, 40px); box-shadow: var(--shadow); }
+  @media (max-width: 900px) { .order-grid { grid-template-columns: 1fr; } .order-copy { position: static; } }
+</style>

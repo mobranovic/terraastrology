@@ -1,0 +1,90 @@
+---
+import { SITE } from '../lib/site';
+import { SIGNS, glyph } from '../lib/zodiac';
+import Starfield from './Starfield.astro';
+const year = new Date().getFullYear();
+---
+<footer class="site-footer">
+  <Starfield count={60} seed={3} />
+  <div class="wrap inner">
+    <div class="about">
+      <p class="name">Terra <em>Astrology</em></p>
+      <p>{SITE.tagline}. Essays and consultations by {SITE.author}.</p>
+      <a class="btn btn-light" href="/astrological-consultation/">Book a consultation</a>
+    </div>
+    <nav aria-label="Footer">
+      <h2>Explore</h2>
+      <ul>
+        <li><a href="/sun-signs/">Sun Signs</a></li>
+        <li><a href="/12-myths-zodiac/">Myths of the Zodiac</a></li>
+        <li><a href="/category/planets/">Planets</a></li>
+        <li><a href="/category/aspects/">Aspects</a></li>
+        <li><a href="/articles/">All articles</a></li>
+      </ul>
+    </nav>
+    <nav aria-label="Site">
+      <h2>Terra</h2>
+      <ul>
+        <li><a href="/about-me/">About me</a></li>
+        <li><a href="/astrological-consultation/">Consultation</a></li>
+        <li><a href="/natal-atlas/">Natal Atlas</a></li>
+        <li><a href="/rss.xml">RSS feed</a></li>
+      </ul>
+    </nav>
+  </div>
+  <div class="wrap bottom">
+    <p class="signs glyph" aria-hidden="true">{SIGNS.map((s) => glyph(s.glyph)).join('  ')}</p>
+    <p>© {year} {SITE.title}</p>
+  </div>
+</footer>
+
+<style>
+  .site-footer {
+    position: relative;
+    overflow: hidden;
+    background: var(--night);
+    color: var(--night-muted);
+    padding: 72px 0 28px;
+    margin-top: 0;
+  }
+  .inner {
+    position: relative;
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr;
+    gap: 40px;
+  }
+  .name {
+    font: 500 1.6rem/1 var(--font-display);
+    color: var(--night-ink);
+  }
+  .name em { color: var(--night-gold); }
+  .about p:not(.name) { max-width: 42ch; }
+  h2 {
+    font: 600 0.75rem/1 var(--font-ui);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--night-gold);
+    margin-bottom: 1rem;
+  }
+  ul { list-style: none; margin: 0; padding: 0; }
+  li { margin-bottom: 0.55rem; }
+  a:not(.btn) { color: var(--night-ink); text-decoration: none; }
+  a:not(.btn):hover { color: var(--night-gold); }
+  .bottom {
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 56px;
+    padding-top: 22px;
+    border-top: 1px solid rgb(255 255 255 / 0.1);
+    font-size: 0.85rem;
+  }
+  .bottom p { margin: 0; }
+  .signs { letter-spacing: 0.3em; color: var(--night-gold); opacity: 0.8; }
+  @media (max-width: 760px) {
+    .inner { grid-template-columns: 1fr 1fr; }
+    .about { grid-column: 1 / -1; }
+  }
+</style>

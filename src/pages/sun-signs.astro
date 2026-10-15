@@ -1,0 +1,58 @@
+---
+import { getEntry, render } from 'astro:content';
+import Page from '../layouts/Page.astro';
+import { getPosts } from '../lib/posts';
+import { SIGNS, glyph } from '../lib/zodiac';
+const page = (await getEntry('pages', 'sun-signs'))!;
+const { Content } = await render(page);
+const slugs = new Set((await getPosts()).map((p) => p.data.slug));
+---
+<Page title="Sun Signs" eyebrow="The twelve signs" lede="Words are often too poor to explain the richness of the language of heaven." description={page.data.excerpt}>
+  <div class="wrap section">
+    <ul class="signs">
+      {SIGNS.map((s) => (
+        <li class="sign">
+          <span class="glyph">{glyph(s.glyph)}</span>
+          <div>
+            <h2><a href={`/${s.post}/`}>{s.name}</a></h2>
+            <p class="meta">{s.dates} · {s.element}</p>
+            {s.myth && slugs.has(s.myth) && <a class="myth" href={`/${s.myth}/`}>Mythology of {s.name} →</a>}
+          </div>
+        </li>
+      ))}
+    </ul>
+
+    <div class="intro">
+      <div class="prose"><Content /></div>
+      <aside>
+        <p class="eyebrow">Start here</p>
+        <a href="/12-signs-of-the-zodiac/">12 Signs of the Zodiac</a>
+        <a href="/12-signs-zodiac/">What does “your sign” really mean?</a>
+        <a href="/12-myths-zodiac/">12 Myths of the Zodiac</a>
+        <a href="/at-the-end-of-the-zodiac/">At the end of the Zodiac</a>
+      </aside>
+    </div>
+  </div>
+</Page>
+<style>
+  .signs { list-style: none; margin: 0 0 72px; padding: 0; display: grid; gap: 16px; grid-template-columns: repeat(auto-fill, minmax(min(100%, 260px), 1fr)); }
+  .sign {
+    display: flex; gap: 18px; align-items: flex-start; position: relative;
+    padding: 22px; border: 1px solid var(--line); border-radius: var(--radius); background: var(--surface);
+    transition: border-color 0.2s;
+  }
+  .sign:hover { border-color: var(--accent); }
+  .sign .glyph { font-size: 2.4rem; line-height: 1; color: var(--accent); width: 1.2em; text-align: center; }
+  .sign h2 { font-size: 1.4rem; margin: 0 0 2px; }
+  .sign h2 a { text-decoration: none; }
+  .sign h2 a::after { content: ''; position: absolute; inset: 0; }
+  .meta { color: var(--muted); font-size: 0.85rem; margin: 0 0 8px; }
+  .myth { position: relative; z-index: 1; font-size: 0.85rem; font-weight: 600; color: var(--accent); text-decoration: none; }
+  .myth:hover { text-decoration: underline; }
+  .intro { display: grid; grid-template-columns: minmax(0, 1fr) 280px; gap: 56px; align-items: start; }
+  aside { position: sticky; top: 96px; display: grid; gap: 4px; padding: 24px; border-radius: var(--radius); background: var(--surface-2); }
+  aside a { padding: 8px 0; border-bottom: 1px solid var(--line); text-decoration: none; font: 500 1.05rem var(--font-display); }
+  aside a:last-child { border: 0; }
+  aside a:hover { color: var(--accent); }
+  @media (max-width: 860px) { .intro { grid-template-columns: 1fr; } aside { position: static; } }
+</style>

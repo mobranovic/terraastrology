@@ -1,0 +1,28 @@
+---
+title: "12 Signs of the Zodiac"
+slug: "12-signs-of-the-zodiac"
+date: "2012-03-06"
+wpId: 744
+categories: ["12-signs-of-the-zodiac"]
+tags: ["12 signs of the zodiac","aquarius","Aries","Cancer","capricorn","Gemini","leo","libra","pisces","sagittarius","scorpio","sideral zodiac","Taurus","virgo","zodiac"]
+featured: false
+excerpt: "We usually take basic things for granted, not even thinking for a moment whether the fundament of our knowledge is firm and close to us as much as we assume. Very concrete example is the answer to the question: “What…"
+---
+
+We usually take basic things for granted, not even thinking for a moment whether the fundament of our knowledge is firm and close to us as much as we assume. Very concrete example is the answer to the question: “What is your Sun sign?”Aries, Cancer, Aquarius…What does it exactly mean? Is it possible to be exclusively one sign of the Zodiac? How it is determined? **How can astrologers know your sign if you are born on the transit day, for example, on September 23rd… are you Virgo or Libra?** Answers are far more complex and they include a lot more elements than 12 signs of the Zodiac. First of all, it is necessary to stop thinking it’s possible to be only one of those signs...
+
+Observing from the Earth, the Sun yearly makes a full circle in one determined orbit – ecliptic. In the background of that orbit there are numerous stars; throughout history, astrologers grouped and named them…constellation of Taurus, Capricorn, Leo. **With the beginning of new era, some 2000 years ago, the first day of spring – March 21st coincided with the imaginary beginning of the Aries constellation.** In the meantime, certain great minds of our civilization – Nikola Kopernik – got to know that the Earth is not the center of the universe and that it rotates around its axis and around the Sun, but that the Earth’s axis rotates as well. Considering that fact, the first day of the spring coincides less and less with the beginning of the Aries, entering Pisces where it’s currently placed.
+
+Most of the astrologers persisted in the statement that everybody born after March 21st is of Aries sign…and surprisingly, they claimed that readings were accurate.
+
+Convergence of worlds in the West civilization brought learning of the East and also Indian astrology – jyotish. They realized that phenomenon and put it in use in their analysis. **In Indian astrology if you are born on March 21st your sign is not Aries, but Pisces…and it functions well.** Nowadays, in hysterical search for something exotic and different that must be better than what is obvious, the mere fact gives the right to practitioners of the Indian astrology to point out deficiency of the Western astrology.
+
+**However, there’s still something missing in the whole story.** If we insist on precisely measured difference between the beginning of the Aries constellation and the beginning of spring (currently approximately 25 degrees) it’s important to point out that **constellations are not even approximately the same size.** What does that mean?!
+
+The natal chart draws planet and house positions in Zodiac circle of 360 degrees, although the Sun needs 365.25 days for full circle – a year. Division of the circle in 12 signs results in 30 degrees by each sign, but in practice, if we just look at the sky, it’s obvious that constellations are not even close to such symmetrical division. We are making another “mistake”. If we continue to insist on real numbers and values, then the period of Virgo should cover almost two months and not only period from August 23rd to September 23rd since that constellation is the largest one on the ecliptic. **Besides all this, superficial connoisseurs of astrology have inserted the 13th sign- Ophiuchus** between Libra and Scorpio; therefore, this fragile construction keeps collapsing more and more. And majority of astrologers still continue to use the old system, not even asking whether there is something to it?
+
+One elaborated and **meaningful response is from Dane Rudhyar in his book "The Pulse of Life"** published in 1943 that entirely deals with signs of the Zodiac. For the first time he separates signs and constellations. He explains how people could have predicted so many obvious facts and they still continue to fit in the impossible. **Symbolism of stars and constellations is one thing, whereas the signs are actually phases of solar motion along its imaginary orbit** – ecliptic. On the basis of its motion we establish the calendar and the roots of this symbolism are present in changes in length of day and night, the great dualism. That dualism pervades the overall humankind through male-female, yin-yang, sky-earth, plus-minus…
+
+**To be born in determined sign means that one is born in the moment when the Sun was in the specific place on ecliptic** and that day of birth “consisted” of a certain amount of day – the individual, and a certain amount of night – the collective. Interaction of these two concepts gives interpretations of the nature of each sign and speaks about our basic (but not the only) driving force.
+
+In the following chapters I will try to convey one of his most interesting interpretations of the Zodiac signs…for the better overall understanding just look at the Sun. **During day it seems there’s only the Sun on the sky and it dominates with its “I”, whereas during the night we realize it’s only one star among the billion others, belonging to something by far bigger**. That consciousness is also hidden in people, at least in those who are able to raise their awareness.

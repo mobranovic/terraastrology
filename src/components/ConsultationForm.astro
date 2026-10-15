@@ -1,0 +1,124 @@
+---
+// Natal chart order form. Submissions are handled by Netlify Forms
+// (no server needed); they arrive in the Netlify dashboard and by e-mail.
+// To use another provider (e.g. Formspree) change `action` and drop the
+// data-netlify attributes.
+import { SERVICES, PLATFORMS } from '../lib/services';
+---
+<form
+  name="natal-chart-order"
+  method="POST"
+  action="/thank-you/"
+  data-netlify="true"
+  netlify-honeypot="company"
+  class="order"
+>
+  <input type="hidden" name="form-name" value="natal-chart-order" />
+  <p class="visually-hidden"><label>Leave empty <input name="company" tabindex="-1" autocomplete="off" /></label></p>
+
+  <fieldset>
+    <legend>1 · Choose a session</legend>
+    <div class="options">
+      {SERVICES.map((s, i) => (
+        <label class="option">
+          <input type="radio" name="service" value={`${s.name} (${s.duration}, €${s.price})`} data-id={s.id} data-partner={s.needsPartner ? '1' : undefined} required checked={i === 1} />
+          <span><strong>{s.name}</strong><small>{s.duration} · €{s.price}</small></span>
+        </label>
+      ))}
+    </div>
+  </fieldset>
+
+  <fieldset>
+    <legend>2 · Your birth data</legend>
+    <div class="row">
+      <label>Full name<input name="name" autocomplete="name" required /></label>
+      <label>E-mail<input type="email" name="email" autocomplete="email" required /></label>
+    </div>
+    <div class="row three">
+      <label>Date of birth<input type="date" name="birth_date" required /></label>
+      <label>Time of birth<input type="time" name="birth_time" /></label>
+      <label>Place of birth<input name="birth_place" placeholder="City, country" required /></label>
+    </div>
+    <label class="check"><input type="checkbox" name="birth_time_unknown" value="yes" /> I don't know my exact birth time</label>
+  </fieldset>
+
+  <fieldset class="partner" hidden>
+    <legend>3 · Partner's birth data <span>(for synastry)</span></legend>
+    <div class="row">
+      <label>Name<input name="partner_name" /></label>
+      <label>Place of birth<input name="partner_birth_place" placeholder="City, country" /></label>
+    </div>
+    <div class="row">
+      <label>Date of birth<input type="date" name="partner_birth_date" /></label>
+      <label>Time of birth<input type="time" name="partner_birth_time" /></label>
+    </div>
+  </fieldset>
+
+  <fieldset>
+    <legend><span class="step-last">3</span> · Session</legend>
+    <div class="row">
+      <label>Preferred platform
+        <select name="platform">{PLATFORMS.map((p) => <option>{p}</option>)}</select>
+      </label>
+      <label>Preferred dates / times<input name="availability" placeholder="e.g. weekday evenings CET" /></label>
+    </div>
+    <label>What would you like to focus on?<textarea name="message" rows="4" placeholder="Questions, life areas or periods you are curious about"></textarea></label>
+  </fieldset>
+
+  <label class="check consent"><input type="checkbox" name="consent" value="yes" required /> I agree that my birth data is used only to prepare this consultation.</label>
+  <button class="btn btn-primary" type="submit">Send order</button>
+  <p class="note">You will receive a reply with a proposed time and payment details. Nothing is charged online.</p>
+</form>
+
+<script>
+  const form = document.querySelector<HTMLFormElement>('form.order')!;
+  const partner = form.querySelector<HTMLFieldSetElement>('.partner')!;
+  const lastStep = form.querySelector('.step-last')!;
+  const sync = () => {
+    const chosen = form.querySelector<HTMLInputElement>('input[name="service"]:checked');
+    const needs = chosen?.dataset.partner === '1';
+    partner.hidden = !needs;
+    lastStep.textContent = needs ? '4' : '3';
+  };
+  // /astrological-consultation/?service=synastry#order preselects a package.
+  const wanted = new URLSearchParams(location.search).get('service');
+  const radio = wanted && form.querySelector<HTMLInputElement>(`input[data-id="${CSS.escape(wanted)}"]`);
+  if (radio) radio.checked = true;
+  form.addEventListener('change', sync);
+  sync();
+</script>
+
+<style>
+  .order { display: grid; gap: 28px; }
+  fieldset { border: 0; padding: 0; margin: 0; display: grid; gap: 16px; }
+  fieldset[hidden] { display: none; }
+  legend { font: 500 1.3rem/1.2 var(--font-display); margin-bottom: 14px; padding: 0; }
+  legend span:not(.step-last) { font: 400 0.9rem var(--font-ui); color: var(--muted); }
+  .options { display: grid; gap: 10px; grid-template-columns: repeat(auto-fill, minmax(min(100%, 220px), 1fr)); }
+  .option {
+    display: flex; gap: 12px; align-items: flex-start;
+    padding: 14px 16px; border: 1px solid var(--line); border-radius: 12px; background: var(--surface); cursor: pointer;
+  }
+  .option:has(input:checked) { border-color: var(--accent); background: var(--accent-soft); }
+  .option input { margin-top: 4px; accent-color: var(--accent); }
+  .option strong { display: block; font-weight: 600; font-size: 0.95rem; }
+  .option small { color: var(--muted); }
+  .row { display: grid; gap: 16px; grid-template-columns: repeat(2, 1fr); }
+  .row.three { grid-template-columns: 1fr 1fr 1.4fr; }
+  label { display: grid; gap: 6px; font-size: 0.88rem; font-weight: 500; color: var(--ink-soft); }
+  input:not([type='radio'], [type='checkbox']), select, textarea {
+    font: 400 1rem var(--font-ui);
+    color: var(--ink);
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 0.75em 0.9em;
+    width: 100%;
+  }
+  input:focus, select:focus, textarea:focus { outline: 2px solid var(--focus); outline-offset: 1px; border-color: transparent; }
+  .check { display: flex; gap: 10px; align-items: center; font-weight: 400; }
+  .check input { accent-color: var(--accent); width: 18px; height: 18px; }
+  .order > .btn { justify-self: start; }
+  .note { color: var(--muted); font-size: 0.88rem; margin: -12px 0 0; }
+  @media (max-width: 640px) { .row, .row.three { grid-template-columns: 1fr; } }
+</style>

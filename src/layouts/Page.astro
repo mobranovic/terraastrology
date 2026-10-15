@@ -1,0 +1,18 @@
+---
+// Simple inner page: night-sky header + prose body.
+import Base from './Base.astro';
+import Starfield from '../components/Starfield.astro';
+interface Props { title: string; eyebrow?: string; lede?: string; description?: string; image?: string; noindex?: boolean }
+const { title, eyebrow, lede, description, image, noindex } = Astro.props;
+---
+<Base title={title} description={description ?? lede} image={image} noindex={noindex}>
+  <header class="page-hero">
+    <Starfield count={70} seed={5} />
+    <div class="wrap">
+      {eyebrow && <p class="eyebrow">{eyebrow}</p>}
+      <h1>{title}</h1>
+      {lede && <p class="lede">{lede}</p>}
+    </div>
+  </header>
+  <slot />
+</Base>
