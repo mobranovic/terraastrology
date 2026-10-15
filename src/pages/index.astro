@@ -150,9 +150,9 @@ const themes = [
     position: relative;
     overflow: hidden;
     background:
-      radial-gradient(60% 80% at 75% 40%, rgb(217 184 92 / 0.14), transparent 70%),
-      radial-gradient(140% 140% at 80% 0%, var(--night-2), var(--night) 65%);
-    color: var(--night-ink);
+      radial-gradient(60% 80% at 75% 40%, var(--glow), transparent 70%),
+      radial-gradient(140% 140% at 80% 0%, var(--band-2), var(--band) 65%);
+    color: var(--band-ink);
     padding: clamp(56px, 9vw, 120px) 0;
   }
   .hero-grid {
@@ -162,22 +162,22 @@ const themes = [
     align-items: center;
     gap: clamp(32px, 6vw, 80px);
   }
-  .hero .eyebrow { color: var(--night-gold); }
+  .hero .eyebrow { color: var(--band-accent); }
   h1 {
     font-size: clamp(2.6rem, 6.4vw, 5.2rem);
     font-weight: 400;
     letter-spacing: -0.03em;
     margin-bottom: 0.35em;
   }
-  h1 em { color: var(--night-gold); font-style: italic; }
+  h1 em { color: var(--band-accent); font-style: italic; }
   .lede {
     font-family: var(--font-text);
     font-size: clamp(1.1rem, 1.6vw, 1.3rem);
-    color: var(--night-muted);
+    color: var(--band-muted);
     max-width: 50ch;
   }
   .actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 32px; }
-  .hero .btn-ghost { color: var(--night-ink); }
+  .hero .btn-ghost { color: var(--band-ink); }
   .wheel-wrap { max-width: 480px; width: 100%; justify-self: center; }
 
   .featured {

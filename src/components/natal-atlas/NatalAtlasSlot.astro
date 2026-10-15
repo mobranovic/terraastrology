@@ -18,7 +18,7 @@ interface Props {
 const { context, compact = false } = Astro.props;
 const { enabled, features, appUrl } = NATAL_ATLAS;
 ---
-<section class:list={['atlas', { compact }]} data-natal-atlas={context} aria-labelledby={`atlas-${context}`}>
+<section class:list={['atlas', 'deep', { compact }]} data-natal-atlas={context} aria-labelledby={`atlas-${context}`}>
   <Starfield count={compact ? 30 : 70} seed={11} />
   <div class="inner">
     <p class="eyebrow">Natal Atlas</p>
@@ -50,16 +50,16 @@ const { enabled, features, appUrl } = NATAL_ATLAS;
     overflow: hidden;
     border-radius: calc(var(--radius) + 6px);
     background:
-      radial-gradient(80% 120% at 100% 0%, rgb(217 184 92 / 0.18), transparent 60%),
-      radial-gradient(120% 140% at 0% 100%, var(--night-2), var(--night));
-    color: var(--night-ink);
+      radial-gradient(80% 120% at 100% 0%, var(--glow), transparent 60%),
+      radial-gradient(120% 140% at 0% 100%, var(--band-2), var(--band));
+    color: var(--band-ink);
     padding: clamp(32px, 5vw, 64px);
-    border: 1px dashed rgb(217 184 92 / 0.45);
+    border: 1px dashed var(--band-line);
   }
   .inner { position: relative; max-width: 60ch; }
-  .eyebrow { color: var(--night-gold); }
+  .eyebrow { color: var(--band-accent); }
   h2 { font-size: clamp(1.6rem, 3vw, 2.4rem); }
-  p { color: var(--night-muted); }
+  p { color: var(--band-muted); }
   .compact { padding: 28px; }
   .compact h2 { font-size: 1.4rem; }
   .mount { min-height: 240px; }

@@ -46,19 +46,19 @@ const ticks = Array.from({ length: 72 }, (_, i) => {
   )}
 </svg>
 <style>
-  .wheel { width: 100%; height: auto; color: var(--night-gold); overflow: visible; }
+  .wheel { width: 100%; height: auto; color: var(--band-accent); overflow: visible; }
   .spin { transform-origin: 200px 200px; animation: spin 240s linear infinite; }
   @keyframes spin { to { transform: rotate(360deg); } }
-  .sun { fill: var(--night-gold); }
+  .sun { fill: var(--band-accent); }
   text {
     font-size: 22px;
-    fill: var(--night-ink);
+    fill: var(--band-ink);
     text-anchor: middle;
     dominant-baseline: central;
     transition: fill 0.2s;
   }
   .hit { fill: transparent; transition: fill 0.2s; }
-  a.sign:hover text, a.sign:focus-visible text { fill: var(--night-gold); }
-  a.sign:hover .hit, a.sign:focus-visible .hit { fill: rgb(255 255 255 / 0.08); }
+  a.sign:hover text, a.sign:focus-visible text { fill: var(--band-accent); }
+  a.sign:hover .hit, a.sign:focus-visible .hit { fill: var(--glow); }
   a.sign:focus-visible { outline: none; }
 </style>

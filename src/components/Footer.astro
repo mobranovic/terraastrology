@@ -4,7 +4,7 @@ import { SIGNS, glyph } from '../lib/zodiac';
 import Starfield from './Starfield.astro';
 const year = new Date().getFullYear();
 ---
-<footer class="site-footer">
+<footer class="site-footer deep">
   <Starfield count={60} seed={3} />
   <div class="wrap inner">
     <div class="about">
@@ -42,8 +42,8 @@ const year = new Date().getFullYear();
   .site-footer {
     position: relative;
     overflow: hidden;
-    background: var(--night);
-    color: var(--night-muted);
+    background: var(--band);
+    color: var(--band-muted);
     padding: 72px 0 28px;
     margin-top: 0;
   }
@@ -55,21 +55,21 @@ const year = new Date().getFullYear();
   }
   .name {
     font: 500 1.6rem/1 var(--font-display);
-    color: var(--night-ink);
+    color: var(--band-ink);
   }
-  .name em { color: var(--night-gold); }
+  .name em { color: var(--band-accent); }
   .about p:not(.name) { max-width: 42ch; }
   h2 {
     font: 600 0.75rem/1 var(--font-ui);
     letter-spacing: 0.14em;
     text-transform: uppercase;
-    color: var(--night-gold);
+    color: var(--band-accent);
     margin-bottom: 1rem;
   }
   ul { list-style: none; margin: 0; padding: 0; }
   li { margin-bottom: 0.55rem; }
-  a:not(.btn) { color: var(--night-ink); text-decoration: none; }
-  a:not(.btn):hover { color: var(--night-gold); }
+  a:not(.btn) { color: var(--band-ink); text-decoration: none; }
+  a:not(.btn):hover { color: var(--band-accent); }
   .bottom {
     position: relative;
     display: flex;
@@ -82,7 +82,7 @@ const year = new Date().getFullYear();
     font-size: 0.85rem;
   }
   .bottom p { margin: 0; }
-  .signs { letter-spacing: 0.3em; color: var(--night-gold); opacity: 0.8; }
+  .signs { letter-spacing: 0.3em; color: var(--band-accent); opacity: 0.8; }
   @media (max-width: 760px) {
     .inner { grid-template-columns: 1fr 1fr; }
     .about { grid-column: 1 / -1; }

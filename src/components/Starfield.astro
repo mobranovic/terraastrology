@@ -1,5 +1,5 @@
 ---
-// Deterministic star field (same on every build) for dark "night sky" bands.
+// Deterministic star field (same on every build) for the hero/header bands.
 interface Props { count?: number; seed?: number }
 const { count = 90, seed = 7 } = Astro.props;
 let s = seed;
@@ -14,7 +14,7 @@ const stars = Array.from({ length: count }, () => ({
 ---
 <svg class="starfield" aria-hidden="true" preserveAspectRatio="none" viewBox="0 0 100 100">
   {stars.map((st) => (
-    <circle cx={st.x} cy={st.y} r={st.r / 10} fill="#fff" opacity={st.o} style={`animation-duration:${st.d}s`} />
+    <circle cx={st.x} cy={st.y} r={st.r / 10} fill="currentColor" opacity={st.o} style={`animation-duration:${st.d}s`} />
   ))}
 </svg>
 <style>
@@ -24,6 +24,8 @@ const stars = Array.from({ length: count }, () => ({
     width: 100%;
     height: 100%;
     pointer-events: none;
+    color: var(--star);
+    opacity: var(--star-opacity, 1);
   }
   circle {
     animation: twinkle ease-in-out infinite alternate;

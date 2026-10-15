@@ -6,31 +6,36 @@
 
 /* ---------- tokens ---------- */
 :root {
-  --bg: #f6f2ea;
-  --surface: #fffcf6;
-  --surface-2: #efe8db;
-  --ink: #1d1b26;
-  --ink-soft: #3b3846;
-  --muted: #6a6575;
-  --line: #e2d9c8;
-  --accent: #a4472a; /* terracotta – "Terra" */
-  --accent-soft: #f3e1d6;
-  --gold: #8f6f1f;
-  --focus: #2f5bd3;
+  --bg: #f6f8f3;
+  --surface: #ffffff;
+  --surface-2: #edf4ee;
+  --ink: #17221c;
+  --ink-soft: #33423a;
+  --muted: #5d6b63;
+  --line: #dce6de;
+  --accent: #1a7a52; /* emerald / sage green */
+  --accent-ink: #ffffff;
+  --accent-soft: #e3f1e8;
+  --gold: #8a6d22; /* small warm details */
+  --focus: #2563eb;
 
-  /* night sky – used for hero and footer in both themes */
-  --night: #0c0f1e;
-  --night-2: #161b33;
-  --night-ink: #eeeadf;
-  --night-muted: #a9a6ba;
-  --night-gold: #d9b85c;
+  /* "band" = hero and page headers: light, airy green in the light theme */
+  --band: #f3f8f2;
+  --band-2: #dcefe2;
+  --band-ink: #17221c;
+  --band-muted: #4f5f56;
+  --band-accent: #1a7a52;
+  --band-line: rgb(26 122 82 / 0.35);
+  --glow: rgb(26 122 82 / 0.10);
+  --star: #1a7a52;
+  --star-opacity: 0.45;
 
   --font-display: 'Fraunces Variable', Georgia, serif;
   --font-text: 'Source Serif 4 Variable', Georgia, serif;
   --font-ui: 'Inter Variable', system-ui, sans-serif;
 
   --radius: 14px;
-  --shadow: 0 1px 2px rgb(20 15 10 / 0.05), 0 8px 24px -12px rgb(20 15 10 / 0.18);
+  --shadow: 0 1px 2px rgb(16 40 28 / 0.05), 0 8px 24px -12px rgb(16 40 28 / 0.16);
   --wrap: 1180px;
   --measure: 68ch;
   color-scheme: light;
@@ -38,35 +43,70 @@
 
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme='light']) {
-    --bg: #0e1120;
-    --surface: #151a2e;
-    --surface-2: #1c2240;
-    --ink: #ece7dc;
-    --ink-soft: #d3cfc6;
-    --muted: #a3a0b3;
-    --line: #283050;
-    --accent: #e48a62;
-    --accent-soft: #2d2237;
-    --gold: #d9b85c;
-    --focus: #8fb0ff;
+    --bg: #0d1512;
+    --surface: #14201b;
+    --surface-2: #192a22;
+    --ink: #e9f1ea;
+    --ink-soft: #cfdcd3;
+    --muted: #9fb1a7;
+    --line: #253a30;
+    --accent: #62d49c;
+    --accent-ink: #0d1512;
+    --accent-soft: #173326;
+    --gold: #d6bc6a;
+    --focus: #8fd3ff;
     --shadow: 0 1px 2px rgb(0 0 0 / 0.3), 0 10px 30px -14px rgb(0 0 0 / 0.6);
+
+    --band: #0b1410;
+    --band-2: #13261c;
+    --band-ink: #e9f1ea;
+    --band-muted: #a3c9b3;
+    --band-accent: #7fdcae;
+    --band-line: rgb(127 220 174 / 0.35);
+    --glow: rgb(98 212 156 / 0.14);
+    --star: #ffffff;
+    --star-opacity: 1;
     color-scheme: dark;
   }
 }
 :root[data-theme='dark'] {
-  --bg: #0e1120;
-  --surface: #151a2e;
-  --surface-2: #1c2240;
-  --ink: #ece7dc;
-  --ink-soft: #d3cfc6;
-  --muted: #a3a0b3;
-  --line: #283050;
-  --accent: #e48a62;
-  --accent-soft: #2d2237;
-  --gold: #d9b85c;
-  --focus: #8fb0ff;
+  --bg: #0d1512;
+  --surface: #14201b;
+  --surface-2: #192a22;
+  --ink: #e9f1ea;
+  --ink-soft: #cfdcd3;
+  --muted: #9fb1a7;
+  --line: #253a30;
+  --accent: #62d49c;
+  --accent-ink: #0d1512;
+  --accent-soft: #173326;
+  --gold: #d6bc6a;
+  --focus: #8fd3ff;
   --shadow: 0 1px 2px rgb(0 0 0 / 0.3), 0 10px 30px -14px rgb(0 0 0 / 0.6);
+
+  --band: #0b1410;
+  --band-2: #13261c;
+  --band-ink: #e9f1ea;
+  --band-muted: #a3c9b3;
+  --band-accent: #7fdcae;
+  --band-line: rgb(127 220 174 / 0.35);
+  --glow: rgb(98 212 156 / 0.14);
+  --star: #ffffff;
+  --star-opacity: 1;
   color-scheme: dark;
+}
+
+/* Deep-green blocks (footer, Natal Atlas panel) – the same in both themes. */
+.deep {
+  --band: #0f2219;
+  --band-2: #1a3a2a;
+  --band-ink: #e9f1ea;
+  --band-muted: #a3c9b3;
+  --band-accent: #7fdcae;
+  --band-line: rgb(127 220 174 / 0.35);
+  --glow: rgb(127 220 174 / 0.16);
+  --star: #ffffff;
+  --star-opacity: 1;
 }
 
 /* ---------- base ---------- */
@@ -174,7 +214,7 @@ p {
 }
 .btn-primary {
   background: var(--accent);
-  color: #fff;
+  color: var(--accent-ink);
 }
 .btn-primary:hover {
   background: color-mix(in srgb, var(--accent) 88%, black);
@@ -184,8 +224,8 @@ p {
   background: transparent;
 }
 .btn-light {
-  background: var(--night-ink);
-  color: var(--night);
+  background: var(--band-accent);
+  color: var(--band);
 }
 
 /* ---------- section headings ---------- */
@@ -230,8 +270,9 @@ p {
 
 /* ---------- page header (inner pages) ---------- */
 .page-hero {
-  background: radial-gradient(120% 140% at 85% 0%, var(--night-2) 0%, var(--night) 60%);
-  color: var(--night-ink);
+  background: radial-gradient(120% 140% at 85% 0%, var(--band-2) 0%, var(--band) 60%);
+  color: var(--band-ink);
+  border-bottom: 1px solid var(--line);
   padding: clamp(56px, 9vw, 112px) 0 clamp(40px, 6vw, 72px);
   position: relative;
   overflow: hidden;
@@ -244,12 +285,12 @@ p {
 .page-hero .lede {
   font-family: var(--font-text);
   font-size: clamp(1.1rem, 1.6vw, 1.3rem);
-  color: var(--night-muted);
+  color: var(--band-muted);
   max-width: 60ch;
   margin: 0;
 }
 .page-hero .eyebrow {
-  color: var(--night-gold);
+  color: var(--band-accent);
 }
 .page-hero > .wrap {
   position: relative;
