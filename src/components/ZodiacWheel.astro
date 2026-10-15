@@ -1,5 +1,5 @@
 ---
-// Zodiac wheel with the Terra Astrology emblem at its centre; each glyph links to its sign essay.
+// Zodiac wheel with the Terra Astrology lantern at its centre; each glyph links to its sign essay.
 import { SIGNS, glyph } from '../lib/zodiac';
 import Logo from './Logo.astro';
 interface Props { size?: number; links?: boolean }
@@ -28,7 +28,7 @@ const ticks = Array.from({ length: 72 }, (_, i) => {
     })}
   </g>
   <circle cx="200" cy="200" r="112" class="disc" />
-  <g transform="translate(116 112)" class="emblem"><Logo size={168} stroke={1.9} title="The Hermit lighting the way" /></g>
+  <g transform="translate(128 128)" class="emblem"><Logo size={144} stroke={2.2} title="An old lantern lit by the guiding star" /></g>
   {pos.map((s) =>
     links ? (
       <a href={`/${s.post}/`} class="sign">
