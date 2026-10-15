@@ -2,57 +2,85 @@
   <defs>
     <clipPath id="c"><circle cx="32" cy="32" r="32"/></clipPath>
     <radialGradient id="glow" cx="0.5" cy="0.5" r="0.5">
-      <stop offset="0" stop-color="#e6fbef"/>
-      <stop offset="0.28" stop-color="#7fdcae" stop-opacity="0.75"/>
+      <stop offset="0" stop-color="#eafcf2"/>
+      <stop offset="0.25" stop-color="#8fe3b8" stop-opacity="0.8"/>
       <stop offset="1" stop-color="#62d49c" stop-opacity="0"/>
     </radialGradient>
     <linearGradient id="road" x1="0.2" y1="1" x2="0.8" y2="0">
-      <stop offset="0" stop-color="#7fdcae" stop-opacity="0.9"/>
-      <stop offset="1" stop-color="#7fdcae" stop-opacity="0.15"/>
+      <stop offset="0" stop-color="#7fdcae" stop-opacity="0.85"/>
+      <stop offset="1" stop-color="#7fdcae" stop-opacity="0.1"/>
     </linearGradient>
   </defs>
   <g clip-path="url(#c)">
     <rect width="64" height="64" fill="#0f2219"/>
-    <!-- moon -->
-    <circle cx="35" cy="26" r="17.5" fill="#dde8e0"/>
-    <circle cx="41" cy="19" r="3.2" fill="#0f2219" opacity="0.07"/>
-    <circle cx="45.5" cy="28" r="2" fill="#0f2219" opacity="0.06"/>
-    <circle cx="36" cy="14.5" r="1.4" fill="#0f2219" opacity="0.06"/>
+    <!-- stars + small moon -->
+    <g fill="#cfe3d6"><circle cx="9" cy="20" r="0.45"/><circle cx="40" cy="7" r="0.4"/><circle cx="57" cy="30" r="0.4"/><circle cx="14" cy="9" r="0.35"/></g>
+    <circle cx="49" cy="15" r="7.5" fill="#dde8e0"/>
+    <circle cx="51" cy="13" r="1.4" fill="#0f2219" opacity="0.08"/>
+    <circle cx="47" cy="17.5" r="1" fill="#0f2219" opacity="0.07"/>
     <!-- hills -->
-    <path fill="#1a3d2b" d="M0 45 C5 41 9 43 13 40 C17 37 21 42 27 41 C34 39.5 39 43.5 46 41 C52 39 57 42 64 40 V64 H0Z"/>
-    <path fill="#081510" d="M0 51 C12 48.5 26 50.5 36 49.5 C47 48.5 56 50.5 64 49.5 V64 H0Z"/>
-    <!-- the lit path, winding to the horizon -->
-    <path fill="url(#road)" d="M30 64 C33 59.5 40 56.5 46 54 C50 52.3 52 50.6 52.6 48.6 C53.2 50.8 52.2 53 49.6 55.2 C46 58.2 42.8 60.8 41.6 64 Z"/>
+    <path fill="#1a3d2b" d="M0 47 C6 43 10 45 15 42 C20 39 24 44 30 43 C37 41.5 42 45 49 42.5 C55 40.5 59 43 64 41.5 V64 H0Z"/>
+    <path fill="#081510" d="M0 54 C14 51 28 53 38 52 C49 51 57 53 64 52 V64 H0Z"/>
+    <path fill="url(#road)" d="M33 64 C36 60 42 57.5 48 55.4 C51.6 54.1 53.6 52.6 54.2 50.8 C54.8 52.8 53.8 54.8 51.4 56.6 C47.8 59.2 44.8 61.4 43.6 64 Z"/>
     <!-- staff -->
-    <path d="M15.4 10 L13.2 52" stroke="#5b8a70" stroke-width="1.4" stroke-linecap="round"/>
-    <!-- hermit -->
-    <g fill="#081510">
-      <path d="M22 12.6 C25.6 12.8 28.4 16 28.6 20.6 L28.8 25.6 C29.9 26.8 30.9 28.2 31.4 29.8 L39.6 32 C40.3 32.3 40.2 33.3 39.5 33.5 L33 34.3 C34.2 40 35.4 46 37 51.4 C31 52.4 22 52.4 11.8 51.4 C13.8 44 16.2 36 17.6 29.4 C16.6 23 17.6 14.8 22 12.6 Z"/>
-      <path d="M32.6 33.8 C35 35.6 36.2 38.8 36 42.2 L33.4 40.8 Z"/>
+    <path d="M12.6 8.5 L11.4 57" stroke="#5b8a70" stroke-width="1.3" stroke-linecap="round"/>
+    <!-- cloak -->
+    <path fill="#081510" d="M25.5 6.8 C30.5 9.5 34.2 15 34.8 21.5 C35.2 25 35.6 27.2 36.6 28.8 L44.6 31 C45.4 31.3 45.3 32.4 44.5 32.6 L37.4 33.4 C38.2 41 39.6 49 41.4 56.5 C34 58 20 58 10.4 56.5 C12.4 48 14.2 40 15.4 33.4 L12.9 34.6 L12.6 32.2 L16.2 29.4 C16.4 26.8 16.4 24.6 16.6 21.5 C17.2 14.4 20.6 9.5 25.5 6.8 Z"/>
+    <!-- hanging sleeve -->
+    <path fill="#081510" d="M37 32.8 C39.6 34.6 41 37.6 41 41.2 L37.8 39.8 Z"/>
+    <!-- rim light on the lantern side -->
+    <g fill="none" stroke="#7fdcae" stroke-width="0.5" stroke-linecap="round" opacity="0.85">
+      <path d="M25.5 6.8 C30.5 9.5 34.2 15 34.8 21.5 C35.2 25 35.6 27.2 36.6 28.8 L44.4 30.9"/>
+      <path d="M37.4 33.4 C38.2 41 39.6 49 41.4 56.5"/>
     </g>
-    <!-- faint outline of the back against the night -->
-    <path fill="none" stroke="#24503a" stroke-width="0.6" d="M28.6 20.6 C28.4 16 25.6 12.8 22 12.6 C17.6 14.8 16.6 23 17.6 29.4 C16.2 36 13.8 44 11.8 51.4"/>
+    <!-- faint outline of the back -->
+    <path fill="none" stroke="#24503a" stroke-width="0.55" d="M25.5 6.8 C20.6 9.5 17.2 14.4 16.6 21.5 C16.4 24.6 16.4 26.8 16.2 29.4 M15.4 33.4 C14.2 40 12.4 48 10.4 56.5"/>
     <!-- cloak folds -->
-    <g fill="none" stroke="#1d4431" stroke-width="0.6" stroke-linecap="round">
-      <path d="M21.6 31 C21 39 20.2 45 19.4 51"/>
-      <path d="M26.6 33 C27.2 40 28 46 29.2 51.2"/>
+    <g fill="none" stroke="#1d4431" stroke-width="0.55" stroke-linecap="round">
+      <path d="M20 36 C19.4 43 18.6 49 17.8 56"/>
+      <path d="M31.6 37 C32.2 44 33 50 34 56.6"/>
     </g>
-    <!-- rim light from the lantern -->
-    <g fill="none" stroke="#7fdcae" stroke-width="0.55" stroke-linecap="round" opacity="0.8">
-      <path d="M33 34.3 C34.2 40 35.4 46 37 51.4"/>
-      <path d="M31.4 29.8 L39.4 31.9"/>
-      <path d="M33.6 40.9 L36 42.2"/>
+    <!-- hood opening -->
+    <path fill="#030a07" d="M25.6 11.2 C29.6 11.6 31.8 15.4 31.6 19.8 C31.5 23.4 30.4 26.4 29.4 28 L21.8 28 C20.8 26.4 19.7 23.4 19.6 19.8 C19.4 15.4 21.6 11.6 25.6 11.2 Z"/>
+    <!-- long hair -->
+    <g fill="none" stroke="#c9d8ce" stroke-width="0.45" stroke-linecap="round">
+      <path d="M22 16 C21 19 20.8 22.6 21.4 26.6"/><path d="M21.2 18 C20.4 21.4 20.6 24.8 21 27.6"/>
+      <path d="M29.2 16 C30.2 19 30.4 22.6 29.8 26.6"/><path d="M30 18 C30.8 21.4 30.6 24.8 30.2 27.6"/>
     </g>
-    <!-- face & beard in the hood -->
-    <path fill="#c3d4c9" d="M27.8 19.8 C26.4 21 26 23.6 26.5 25.8 C26.9 27.8 27.6 29.2 28.2 29.8 L28.7 26.6 L28.4 20.6 Z"/>
-    <!-- chain, glow, star, lantern -->
-    <path d="M39.6 33.2 L44.9 37.8" stroke="#081510" stroke-width="0.6"/>
-    <circle cx="45" cy="42.4" r="11" fill="url(#glow)"/>
-    <path fill="#f2fff7" d="M45 32.6 C45.5 39.8 46 41.4 53.6 42.4 C46 43.4 45.5 45 45 52.2 C44.5 45 44 43.4 36.4 42.4 C44 41.4 44.5 39.8 45 32.6 Z"/>
-    <!-- lantern -->
-    <path fill="#081510" d="M43.2 39.4 L45 37.6 L46.8 39.4 Z"/>
-    <rect x="43.5" y="39.6" width="3" height="4.6" rx="0.4" fill="#d9f7e6" stroke="#081510" stroke-width="0.6"/>
-    <path d="M45 39.6 V44.2" stroke="#081510" stroke-width="0.45"/>
-    <path fill="#081510" d="M43.4 44.2 h3.2 l-0.6 0.9 h-2 z"/>
+    <!-- face -->
+    <path fill="#e3ece5" d="M25.6 13.4 C28 13.5 29.4 15.6 29.3 18.4 C29.3 20.4 28.6 21.8 27.6 22.6 L23.6 22.6 C22.6 21.8 21.9 20.4 21.9 18.4 C21.8 15.6 23.2 13.5 25.6 13.4 Z"/>
+    <!-- brows, eyes, nose -->
+    <g stroke="#0f2219" stroke-linecap="round" fill="none">
+      <path d="M23.1 16.9 C23.7 16.4 24.5 16.4 25 16.8 M28.1 16.9 C27.5 16.4 26.7 16.4 26.2 16.8" stroke-width="0.55"/>
+      <path d="M24.1 18.1 h0.7 M26.5 18.1 h0.7" stroke-width="0.6"/>
+      <path d="M25.6 18.2 L25.4 20 L26 20.2" stroke-width="0.4"/>
+    </g>
+    <!-- beard and moustache -->
+    <path fill="#e3ece5" d="M22.4 20.2 C22.8 21.6 23.6 22 24.6 21.8 C25.2 21.6 25.6 21.4 25.6 21.4 C25.6 21.4 26 21.6 26.6 21.8 C27.6 22 28.4 21.6 28.8 20.2 C29.6 22.6 29.4 25.6 28.4 28.4 C27.8 30 27.2 31.6 26.6 33.2 L25.6 31.6 L24.6 33.2 C24 31.6 23.4 30 22.8 28.4 C21.8 25.6 21.6 22.6 22.4 20.2 Z"/>
+    <g fill="none" stroke="#9db7a6" stroke-width="0.35" stroke-linecap="round">
+      <path d="M24 23.4 C24.2 26 24.8 28.6 25 31"/><path d="M27.2 23.4 C27 26 26.4 28.6 26.2 31"/><path d="M25.6 22.8 V30"/>
+    </g>
+    <path d="M24.2 21.2 C25 20.6 26.2 20.6 27 21.2" stroke="#9db7a6" stroke-width="0.4" fill="none"/>
+    <!-- hands -->
+    <circle cx="45.2" cy="31.8" r="1.1" fill="#d6e3da"/>
+    <circle cx="13.2" cy="33.6" r="1.05" fill="#d6e3da"/>
+    <!-- light -->
+    <circle cx="46.4" cy="43.2" r="12" fill="url(#glow)"/>
+    <g stroke="#bff2d6" stroke-width="0.4" stroke-linecap="round" opacity="0.55">
+      <path d="M53.85 44.68 L58.95 45.70 M52.72 47.42 L55.05 48.98 M50.62 49.52 L53.51 53.84 M47.88 50.65 L48.43 53.40 M44.92 50.65 L43.90 55.75 M42.18 49.52 L40.62 51.85 M40.08 47.42 L35.76 50.31 M38.95 44.68 L36.20 45.23 M38.95 41.72 L33.85 40.70 M40.08 38.98 L37.75 37.42 M42.18 36.88 L39.29 32.56 M44.92 35.75 L44.37 33.00 M47.88 35.75 L48.90 30.65 M50.62 36.88 L52.18 34.55 M52.72 38.98 L57.04 36.09 M53.85 41.72 L56.60 41.17"/>
+    </g>
+    <!-- chain -->
+    <path d="M45.4 32.6 L46.4 36.6" stroke="#9db7a6" stroke-width="0.45" stroke-dasharray="0.6 0.4"/>
+    <!-- old lantern -->
+    <g>
+      <circle cx="46.4" cy="37.4" r="0.85" fill="none" stroke="#081510" stroke-width="0.5"/>
+      <path fill="#081510" d="M43.4 40.6 L46.4 38.1 L49.4 40.6 Z"/>
+      <rect x="43.3" y="40.5" width="6.2" height="0.8" rx="0.2" fill="#081510"/>
+      <rect x="43.9" y="41.3" width="5" height="5.6" fill="#f2fff7"/>
+      <path d="M43.9 41.3 V46.9 M48.9 41.3 V46.9" stroke="#081510" stroke-width="0.7"/>
+      <path fill="#081510" d="M43.2 46.8 H49.6 L48.6 48.2 H44.2 Z"/>
+      <path fill="#7fdcae" d="M46.4 42 C47.4 43.4 47.6 44.6 46.4 45.8 C45.2 44.6 45.4 43.4 46.4 42 Z"/>
+      <path fill="#ffffff" d="M46.4 43.2 C46.9 44 46.9 44.8 46.4 45.3 C45.9 44.8 45.9 44 46.4 43.2 Z"/>
+    </g>
   </g>
 </svg>
