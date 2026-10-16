@@ -1,7 +1,6 @@
 ---
-// Zodiac wheel with the Terra Astrology lantern at its centre; each glyph links to its sign essay.
+// Zodiac wheel with the Terra Astrology emblem at its centre; each glyph links to its sign essay.
 import { SIGNS, glyph } from '../lib/zodiac';
-import Logo from './Logo.astro';
 interface Props { size?: number; links?: boolean }
 const { links = true } = Astro.props;
 const R = 150;
@@ -27,8 +26,7 @@ const ticks = Array.from({ length: 72 }, (_, i) => {
       return <line x1={200 + Math.cos(a) * 122} y1={200 + Math.sin(a) * 122} x2={200 + Math.cos(a) * 172} y2={200 + Math.sin(a) * 172} stroke-width="0.6" opacity="0.6" />;
     })}
   </g>
-  <circle cx="200" cy="200" r="112" class="disc" />
-  <g transform="translate(128 128)" class="emblem"><Logo size={144} stroke={2.2} title="An old lantern lit by the guiding star" /></g>
+  <image href="/brand/logo-512.webp" x="86" y="86" width="228" height="228" class="emblem"><title>The hermit lighting the way with his lantern</title></image>
   {pos.map((s) =>
     links ? (
       <a href={`/${s.post}/`} class="sign">
@@ -43,8 +41,7 @@ const ticks = Array.from({ length: 72 }, (_, i) => {
 </svg>
 <style>
   .wheel { width: 100%; height: auto; color: var(--band-accent); overflow: visible; }
-  .disc { fill: var(--surface); opacity: 0.55; }
-  .emblem { color: var(--band-ink); --logo-accent: var(--band-accent); }
+  .emblem { filter: drop-shadow(0 8px 20px rgb(15 34 25 / 0.25)); }
   text {
     font-size: 22px;
     fill: var(--band-ink);

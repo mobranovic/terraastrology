@@ -20,7 +20,7 @@ const essays = (await getPosts()).length;
     {ABOUT.photo ? (
       <img class="portrait" src={ABOUT.photo} alt="Marko Obranović" decoding="async" />
     ) : (
-      <div class="emblem"><Logo size={200} title="Terra Astrology logo: an old lantern lit by the guiding star" /></div>
+      <div class="emblem"><Logo size={340} title="Terra Astrology emblem: the hermit lighting the way with his lantern" /></div>
     )}
     <div>
       <div class="prose">
@@ -67,8 +67,8 @@ const essays = (await getPosts()).length;
 <style>
   .about { display: grid; grid-template-columns: 340px minmax(0, 1fr); gap: clamp(32px, 6vw, 72px); align-items: start; }
   .portrait { width: 100%; aspect-ratio: 4 / 5; object-fit: cover; border-radius: var(--radius); box-shadow: var(--shadow); position: sticky; top: 100px; }
-  .emblem { position: sticky; top: 100px; aspect-ratio: 1; border-radius: 50%; background: var(--surface-2); display: grid; place-items: center; color: var(--ink); }
-  .emblem :global(svg) { width: 62%; height: auto; }
+  .emblem { position: sticky; top: 100px; }
+  .emblem :global(img) { width: 100%; height: auto; filter: drop-shadow(0 10px 24px rgb(15 34 25 / 0.2)); }
   .big { font-size: 1.2em; color: var(--ink); }
   .facts { list-style: none; padding: 0; margin: 32px 0; display: flex; flex-wrap: wrap; gap: 10px; }
   .facts li { padding: 10px 16px; border-radius: 999px; background: var(--accent-soft); color: var(--accent); font-weight: 600; font-size: 0.9rem; }

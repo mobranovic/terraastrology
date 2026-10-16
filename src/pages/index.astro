@@ -109,7 +109,7 @@ const questions = [
       {ABOUT.photo ? (
         <img src={ABOUT.photo} alt="Marko Obranović" loading="lazy" decoding="async" />
       ) : (
-        <div class="emblem"><Logo size={200} /></div>
+        <div class="emblem"><Logo size={300} loading="lazy" /></div>
       )}
       <div>
         <p class="eyebrow">About</p>
@@ -204,8 +204,7 @@ const questions = [
 
   .about { display: grid; grid-template-columns: 300px 1fr; gap: clamp(32px, 6vw, 72px); align-items: center; }
   .about img { width: 100%; aspect-ratio: 4 / 5; object-fit: cover; border-radius: var(--radius); box-shadow: var(--shadow); }
-  .emblem { aspect-ratio: 1; border-radius: 50%; background: var(--surface); display: grid; place-items: center; color: var(--ink); box-shadow: var(--shadow); }
-  .emblem :global(svg) { width: 62%; height: auto; }
+  .emblem :global(img) { width: 100%; height: auto; filter: drop-shadow(0 10px 24px rgb(15 34 25 / 0.2)); }
   .about h2 { font-size: clamp(1.8rem, 3.4vw, 2.6rem); }
   .about p:not(.eyebrow) { font-family: var(--font-text); color: var(--ink-soft); font-size: 1.08rem; max-width: 60ch; }
   .about .quote { font-style: italic; font-size: 1.25rem; color: var(--ink); }

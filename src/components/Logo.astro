@@ -1,32 +1,19 @@
 ---
-// Terra Astrology logo: an old lantern with the guiding star as its light.
-// Lines use the current text colour; the star uses --logo-accent
-// (falls back to the site accent).
-interface Props { size?: number; class?: string; title?: string; stroke?: number }
-const { size = 40, class: cls, title, stroke = 2.6 } = Astro.props;
+// Terra Astrology emblem – the hermit lighting the way with his lantern.
+// Image files are generated from brand/emblem-source.jpg by
+// `node scripts/make-logo.mjs`.
+interface Props { size?: number; class?: string; title?: string; loading?: 'eager' | 'lazy' }
+const { size = 44, class: cls, title, loading = 'eager' } = Astro.props;
+const src = size <= 48 ? 96 : size <= 128 ? 256 : 512;
 ---
-<svg
+<img
   class={cls}
+  src={`/brand/logo-${src}.webp`}
+  srcset={`/brand/logo-96.webp 96w, /brand/logo-192.webp 192w, /brand/logo-256.webp 256w, /brand/logo-512.webp 512w`}
+  sizes={`${size}px`}
   width={size}
   height={size}
-  viewBox="0 0 64 64"
-  fill="none"
-  stroke-linecap="round"
-  stroke-linejoin="round"
-  xmlns="http://www.w3.org/2000/svg"
-  role={title ? 'img' : undefined}
-  aria-hidden={title ? undefined : 'true'}
->
-  {title && <title>{title}</title>}
-  <g stroke="currentColor" stroke-width={stroke}>
-    <circle cx="32" cy="7.6" r="3"/>
-    <path d="M32 10.6 V13.6"/>
-    <path d="M22.6 23 C22.6 17.6 26.8 13.6 32 13.6 C37.2 13.6 41.4 17.6 41.4 23"/>
-    <path d="M19.4 23.4 H44.6"/>
-    <path d="M22.6 23.4 L24 45.6 M41.4 23.4 L40 45.6"/>
-    <path d="M19.4 45.8 H44.6"/>
-    <path d="M23.4 45.8 L26.2 51.6 H37.8 L40.6 45.8"/>
-    <path d="M32 51.6 V55.6"/>
-  </g>
-  <path stroke="var(--logo-accent, var(--accent))" stroke-width={stroke * 0.85} d="M32 26.6 C32.7 32.6 33.6 33.7 38.8 34.6 C33.6 35.5 32.7 36.6 32 42.6 C31.3 36.6 30.4 35.5 25.2 34.6 C30.4 33.7 31.3 32.6 32 26.6 Z"/>
-</svg>
+  alt={title ?? ''}
+  loading={loading}
+  decoding="async"
+/>

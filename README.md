@@ -43,7 +43,7 @@ npm run build      # gotova stranica u mapi dist/
 Sve se upisuje na jedno mjesto; odjeljci se na stranici pojavljuju sami čim podaci postoje:
 
 - [ ] **Iskustva klijenata** (3–5, uz dozvolu) → `src/data/testimonials.ts`
-- [ ] **Fotografija** → staviti u `public/images/` i upisati putanju u `src/data/about.ts` (`photo`); do tada se prikazuje amblem
+- [ ] **Fotografija** → staviti u `public/images/` i upisati putanju u `src/data/about.ts` (`photo`); do tada se prikazuje logotip
 - [ ] **Biografija i činjenice** (godine prakse, obrazovanje) → `src/data/about.ts`
 - [ ] **Kalendar** (npr. Cal.com) → `BOOKING.calUrl`
 - [ ] **Plaćanje unaprijed** (Stripe/PayPal linkovi) → `BOOKING.paymentLinks`
@@ -105,6 +105,13 @@ posjetitelja – podaci o rođenju nikamo se ne šalju. Popis mjesta: `public/da
 
 `npm run build` prije izgradnje sam izrađuje umanjene WebP kopije slika (`public/thumbs/`,
 nisu u gitu) – kartice i članci tako učitavaju ~40 KB umjesto ~1 MB po slici.
+
+## Logotip
+
+Izvor je `brand/emblem-source.jpg`. Ako ga zamijenite novom slikom, pokrenite
+`node scripts/make-logo.mjs` – skripta izreže okrugli amblem, makne bijelu pozadinu i izradi
+sve veličine (`public/brand/`, favicon, ikona za iPhone). Slika za dijeljenje na društvenim
+mrežama (`public/og.png`) radi se s `node scripts/make-brand-images.mjs` (treba Playwright).
 
 ## Ponovni uvoz iz WordPressa
 

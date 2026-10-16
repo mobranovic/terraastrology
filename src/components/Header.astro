@@ -7,7 +7,7 @@ const isCurrent = (href: string) => path === href || (href !== '/' && path.start
 <header class="site-header">
   <div class="wrap bar">
     <a class="brand" href="/" aria-label={`${SITE.title} — home`}>
-      <Logo size={42} class="mark" />
+      <Logo size={44} class="mark" />
       <span>Terra <em>Astrology</em></span>
     </a>
 
@@ -80,7 +80,8 @@ const isCurrent = (href: string) => path === href || (href !== '/' && path.start
   }
   .mark {
     flex: none;
-    color: var(--ink);
+    width: 44px;
+    height: 44px;
   }
   .nav ul {
     display: flex;
